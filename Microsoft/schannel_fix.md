@@ -164,6 +164,7 @@ Instead, you can use **NLTEST** on DC2 to target **DC1**:
 When you run:
 ```powershell
 netdom resetpwd /Server:<HealthyDC> /UserD:<Domain>\<AdminUser> /PasswordD:*
+netdom resetpwd /s:server2 /ud:mydomain\administrator /pd:* # May be correct Syntax.
 ```
 on **DC1**, you are telling DC1:
 
