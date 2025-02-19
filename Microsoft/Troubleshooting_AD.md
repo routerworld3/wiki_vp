@@ -132,6 +132,8 @@ Active Directory (AD) requires consistent **monitoring** and **maintenance** to 
 
    ```powershell
    dcdiag /s:DC1 /v
+   # output to the file 
+   dcdiag /s:DC1 /v /f:c:\temp\dcdiag.txt
    ```
 
    - Gathers detailed diagnostic info for `DC1`.
