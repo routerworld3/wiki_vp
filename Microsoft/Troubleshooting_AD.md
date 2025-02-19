@@ -542,7 +542,7 @@ In an authoritative restore:
 
 ---
 
-## 3. DC Identity, Certificates, and GUID Issues (Especially in DoD Environments)
+## 3. DC Identity, Certificates, and GUID Issues 
 
 In a **Department of Defense (DoD)** or other high-security environment, Domain Controllers often have **certificates** for smart card logons, LDAPS, or other secure communications. These certificates can be tied to:
 
