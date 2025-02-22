@@ -130,3 +130,64 @@ AWS Image Builder
   - **Scalability:**  
     The pipeline can be scaled and scheduled to produce images across multiple regions and accounts effortlessly.
 
+Based on the provided Terraform code, here are the recipes and components for RHEL8 and RHEL9 builds:
+
+### RHEL8 Build
+
+#### Image Recipe
+- **Base Image**: RHEL8 Base Image
+- **Components**:
+  1. `aws_imagebuilder_component.rhel8_baseline_components` (version 8.10.0)
+  2. `aws_imagebuilder_component.rhel8_baseline_stig` (version 8.10.0)
+  3. `aws_imagebuilder_component.rhel8_baseline_stig_ansible` (version 8.10.0)
+  4. `aws_imagebuilder_component.rhel8_eks_worker` (version 8.0.0)
+  5. AWS CLI v2 Update Component
+  6. Powershell for Linux - via Yum
+  7. Reboot During Build Phase
+  8. Reboot During Test Phase
+
+#### EKS Worker Image Recipe
+- **Base Image**: RHEL8 Base Image
+- **Components**:
+  1. `aws_imagebuilder_component.rhel8_baseline_components` (version 8.10.0)
+  2. `aws_imagebuilder_component.rhel8_baseline_stig` (version 8.10.0)
+  3. `aws_imagebuilder_component.rhel8_baseline_stig_ansible` (version 8.10.0)
+  4. `aws_imagebuilder_component.rhel8_eks_worker` (version 8.0.0)
+  5. AWS CLI v2 Update Component
+  6. Powershell for Linux - via Yum
+  7. Reboot During Build Phase
+  8. Reboot During Test Phase
+
+### RHEL9 Build
+
+#### Image Recipe
+- **Base Image**: RHEL9 Base Image
+- **Components**:
+  1. `aws_imagebuilder_component.rhel9_baseline_components` (version 9.0.0)
+  2. `aws_imagebuilder_component.rhel9_baseline_stig` (version 9.0.0)
+  3. `aws_imagebuilder_component.rhel9_baseline_stig_ansible` (version 9.0.0)
+  4. AWS CLI v2 Update Component
+  5. Powershell for Linux - via Yum
+  6. Reboot During Build Phase
+  7. Reboot During Test Phase
+
+#### EKS Worker Image Recipe
+- **Base Image**: RHEL9 Base Image
+- **Components**:
+  1. `aws_imagebuilder_component.rhel9_baseline_components` (version 9.0.0)
+  2. `aws_imagebuilder_component.rhel9_baseline_stig` (version 9.0.0)
+  3. `aws_imagebuilder_component.rhel9_baseline_stig_ansible` (version 9.0.0)
+  4. `aws_imagebuilder_component.rhel9_eks_worker` (version 9.0.0)
+  5. AWS CLI v2 Update Component
+  6. Powershell for Linux - via Yum
+  7. Reboot During Build Phase
+  8. Reboot During Test Phase
+
+### Additional Components (AWS Provided)
+- AWS CLI Installer
+- STIG High
+- Powershell Linux (yum)
+- Powershell Linux 7.2.13
+- Reboot TEST
+
+Ensure to update the version strings in the Terraform code to match the version of RHEL (8.0.X or 9.0.X) and the specific revisions as needed.
