@@ -191,3 +191,75 @@ Based on the provided Terraform code, here are the recipes and components for RH
 - Reboot TEST
 
 Ensure to update the version strings in the Terraform code to match the version of RHEL (8.0.X or 9.0.X) and the specific revisions as needed.
+
+Certainly! Here is the updated table format with an additional column for notes and a larger width for the comments column:
+
+### RHEL8 Build
+
+#### Image Recipe
+
+| Component Name                          | Version  | Notes                                                                                   |
+|-----------------------------------------|----------|-----------------------------------------------------------------------------------------|
+| RHEL8 Base Image                        | N/A      |                                                                                         |
+| rhel8_baseline_components               | 8.10.0   |                                                                                         |
+| rhel8_baseline_stig                     | 8.10.0   |                                                                                         |
+| rhel8_baseline_stig_ansible             | 8.10.0   |                                                                                         |
+| AWS CLI v2 Update Component             | x.x.x    | Update to the latest version                                                            |
+| Powershell for Linux - via Yum          | x.x.x    | Update to the latest version                                                            |
+| Reboot During Build Phase               | x.x.x    | Update to the latest version                                                            |
+| Reboot During Test Phase                | x.x.x    | Update to the latest version                                                            |
+
+#### EKS Worker Image Recipe
+
+| Component Name                          | Version  | Notes                                                                                   |
+|-----------------------------------------|----------|-----------------------------------------------------------------------------------------|
+| RHEL8 Base Image                        | N/A      |                                                                                         |
+| rhel8_baseline_components               | 8.10.0   |                                                                                         |
+| rhel8_baseline_stig                     | 8.10.0   |                                                                                         |
+| rhel8_baseline_stig_ansible             | 8.10.0   |                                                                                         |
+| rhel8_eks_worker                        | 8.0.0    |                                                                                         |
+| AWS CLI v2 Update Component             | x.x.x    | Update to the latest version                                                            |
+| Powershell for Linux - via Yum          | x.x.x    | Update to the latest version                                                            |
+| Reboot During Build Phase               | x.x.x    | Update to the latest version                                                            |
+| Reboot During Test Phase                | x.x.x    | Update to the latest version                                                            |
+
+### RHEL9 Build
+
+#### Image Recipe
+
+| Component Name                          | Version  | Notes                                                                                   |
+|-----------------------------------------|----------|-----------------------------------------------------------------------------------------|
+| RHEL9 Base Image                        | N/A      |                                                                                         |
+| rhel9_baseline_components               | 9.0.0    |                                                                                         |
+| rhel9_baseline_stig                     | 9.0.0    |                                                                                         |
+| rhel9_baseline_stig_ansible             | 9.0.0    |                                                                                         |
+| AWS CLI v2 Update Component             | x.x.x    | Update to the latest version                                                            |
+| Powershell for Linux - via Yum          | x.x.x    | Update to the latest version                                                            |
+| Reboot During Build Phase               | x.x.x    | Update to the latest version                                                            |
+| Reboot During Test Phase                | x.x.x    | Update to the latest version                                                            |
+
+#### EKS Worker Image Recipe
+
+| Component Name                          | Version  | Notes                                                                                   |
+|-----------------------------------------|----------|-----------------------------------------------------------------------------------------|
+| RHEL9 Base Image                        | N/A      |                                                                                         |
+| rhel9_baseline_components               | 9.0.0    |                                                                                         |
+| rhel9_baseline_stig                     | 9.0.0    |                                                                                         |
+| rhel9_baseline_stig_ansible             | 9.0.0    |                                                                                         |
+| rhel9_eks_worker                        | 9.0.0    |                                                                                         |
+| AWS CLI v2 Update Component             | x.x.x    | Update to the latest version                                                            |
+| Powershell for Linux - via Yum          | x.x.x    | Update to the latest version                                                            |
+| Reboot During Build Phase               | x.x.x    | Update to the latest version                                                            |
+| Reboot During Test Phase                | x.x.x    | Update to the latest version                                                            |
+
+### Additional Components (AWS Provided)
+
+| Component Name                          | Version  | Notes                                                                                   |
+|-----------------------------------------|----------|-----------------------------------------------------------------------------------------|
+| AWS CLI Installer                       | 1.0.4    |                                                                                         |
+| STIG High                               | 2023.2.2 |                                                                                         |
+| Powershell Linux (yum)                  | 1.0.0    |                                                                                         |
+| Powershell Linux 7.2.13                 | 7.2.13   |                                                                                         |
+| Reboot TEST                             | 1.0.0    |                                                                                         |
+
+Please ensure to update the version strings (`x.x.x`) in the Terraform code to match the appropriate versions and revisions as needed.
