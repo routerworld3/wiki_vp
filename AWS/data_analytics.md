@@ -1,5 +1,3 @@
-Below is an **updated** solution architecture diagram and explanation that includes both **AWS** and **non-AWS services** (e.g., **Qlik** for ingestion and analytics, **Informatica** or **Talend** for data integration) in a typical modern data and analytics stack.
-
 ---
 
 ## 1. High-Level Architecture Diagram (with AWS + Non-AWS Services)
