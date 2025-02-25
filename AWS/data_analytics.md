@@ -1,9 +1,3 @@
-Below is an **updated** overview that includes:
-
-1. **Differences** between a database and a data warehouse.  
-2. Whether **AWS Oracle RDS** can function as a data warehouse.  
-3. A **comparison** of data warehouse vs. data lake.  
-4. An **AWS reference architecture** (diagram) for data/business analytics, showcasing how data flows from ingestion to analytics.
 
 ---
 
