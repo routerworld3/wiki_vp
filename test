@@ -1,0 +1,39 @@
+**Architecture Decision Record (ADR): Selection of Terraform over OpenTofu**
+
+**Context:**
+
+In evaluating Infrastructure as Code (IaC) tools for our organization, we have considered both HashiCorp's Terraform and the community-driven fork, OpenTofu. A critical factor in our decision-making process is the sustainability and active development of these tools, as indicated by the number of contributors and the frequency of recent activities on their respective GitHub repositories.
+
+**Decision:**
+
+After thorough analysis, we have decided to adopt **Terraform** as our primary IaC tool.
+
+**Rationale:**
+
+1. **Active Development and Contributor Base:**
+
+   - **Terraform:** Maintained by HashiCorp, Terraform continues to exhibit robust development activity. The repository has a substantial number of active contributors, ensuring ongoing enhancements and timely issue resolutions.
+
+   - **OpenTofu:** Despite initial support, OpenTofu's development activity has declined. Reports indicate that the majority of commits over the past year and a half have been made by a small group of developers, suggesting a decrease in broader community engagement. citeturn0search11
+
+2. **Sustainability and Community Support:**
+
+   - **Terraform:** As the original project, Terraform benefits from a large and active community, providing extensive modules, providers, and community support resources.
+
+   - **OpenTofu:** Although launched with significant pledges from various companies and individuals, recent analyses show that many of these commitments have not materialized into sustained contributions. For instance, despite pledges totaling 18 full-time equivalents (FTEs) from four companies, the current active contributor count is significantly lower. citeturn0search15
+
+3. **Risk of Project Abandonment:**
+
+   - **Terraform:** Backed by HashiCorp, Terraform has a clear roadmap and dedicated resources, minimizing the risk of project abandonment.
+
+   - **OpenTofu:** The decline in active contributions raises concerns about the project's long-term viability. The disparity between initial pledges and actual contributions suggests potential challenges in sustaining the project's momentum.
+
+**Consequences:**
+
+By choosing Terraform, we align with a tool that has a proven track record, active development, and a vibrant community. This decision ensures that our IaC practices are built on a stable and well-supported platform, reducing risks associated with tool obsolescence and inadequate support.
+
+**References:**
+
+- citeturn0search11
+
+- citeturn0search15 
