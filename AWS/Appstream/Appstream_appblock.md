@@ -81,4 +81,3 @@ This overview should clarify which Amazon AppStream 2.0 fleet type is suitable f
 
 ---
 
-This overview should clarify which Amazon AppStream 2.0 fleet type is suitable for your scenarios and what implications each has for managing and securing your applications.
