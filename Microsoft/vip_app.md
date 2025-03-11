@@ -61,6 +61,7 @@ Would you like a diagram or flowchart showing how vip_app interacts with Entra I
 Here is the flowchart depicting how vip_app integrates with Microsoft Entra ID (Azure AD) and Microsoft Graph API:
 
 graph TD;
+```mermaid
   A[Terraform Provisioning] -->|Creates App, Assigns Roles| B[vip_app (Enterprise Application)];
   B -->|Uses OAuth 2.0 Client Credentials Flow| C[Certificate-Based Authentication (X.509 Cert)];
   C -->|Authenticates to| D[Microsoft Entra ID (Azure AD)];
@@ -68,6 +69,7 @@ graph TD;
   E -->|Allows Actions via| F[App-Only Permissions];
   
   F -->|Permissions Granted| G[Group.ReadWrite.All, User.ReadWrite.All, User.EnableDisableAccount.All];
+```
 Flow Explanation:
 Terraform Provisioning
 
