@@ -1,4 +1,6 @@
-Here's a clear, concise comparison of **Amazon AppStream 2.0 Fleet Types**, highlighting **Elastic Fleets**, **On-Demand Fleets**, and **Always-On Fleets**. This will help you choose the right fleet type based on your specific use cases and requirements.
+# Appstream Elastic Fleet and On-Demand/Alway-On Fleet
+
+This overview should clarify which Amazon AppStream 2.0 fleet type is suitable for your scenarios and what implications each has for managing and securing your applications.
 
 ---
 
