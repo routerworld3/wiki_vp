@@ -1,8 +1,3 @@
-You're absolutely right! The `New-ApplicationAccessPolicy` cmdlet is an **Exchange Online PowerShell command**, not for **Microsoft Graph API** in **Microsoft Entra ID (Azure AD)**.
-
-**Microsoft Entra ID does NOT currently support Application Access Policies via PowerShell or GUI for Microsoft Graph API permissions.** 
-
-However, you can still **restrict Graph API access to specific groups** using **Graph API role-based assignments and conditional access policies**. Below are the **correct ways** to achieve this.
 
 ---
 
