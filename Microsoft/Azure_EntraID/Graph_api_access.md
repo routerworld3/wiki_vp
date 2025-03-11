@@ -42,18 +42,16 @@ This ensures that only **specific group(s)** are accessible programmatically.
 
 ---
 
-### **🚀 Summary**
+### ** Summary**
 | Restriction Method | Works for Graph API? | GUI Support? | Best Use Case |
 |--------------------|--------------------|--------------|--------------|
-| **Application Access Policies (`New-ApplicationAccessPolicy`)** | ❌ No (Exchange Only) | ❌ No | Not applicable for Graph API |
 | **App Role Assignments** | ✅ Yes | ✅ Yes | Restricting Graph API access per app |
 | **Conditional Access Policies** | ✅ Yes | ✅ Yes | Enforcing security & API access control |
 | **Graph API Filtering (`$filter` Queries)** | ✅ Yes | ❌ No (Only via API) | Programmatically limiting access |
 
 ---
-### **🎯 Best Approach**
+### ** Best Approach**
 - If you need **organization-wide enforcement**, use **Conditional Access**.
 - If you need **app-specific API access control**, use **App Role Assignments**.
 - If your app can enforce its own restrictions, use **Graph API Filtering**.
 
-Would you like help setting up a **step-by-step implementation** for any of these? 🚀
