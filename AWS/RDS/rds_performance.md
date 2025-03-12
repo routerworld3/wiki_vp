@@ -2,7 +2,7 @@
 
 ---
 
-## 📌 **Logical Flow of Performance Bottlenecks in AWS RDS:**
+##  **Logical Flow of Performance Bottlenecks in AWS RDS:**
 
 Performance issues in AWS RDS databases typically occur in three primary areas:
 
@@ -14,7 +14,7 @@ Let's explore each logically and clearly:
 
 ---
 
-## ✅ **1. Instance Size (CPU/Memory Bottleneck):**
+##  **1. Instance Size (CPU/Memory Bottleneck):**
 
 ### **When is Instance Size the bottleneck?**
 
@@ -35,7 +35,7 @@ Let's explore each logically and clearly:
 
 ---
 
-## ✅ **2. Storage (IOPS & Throughput Bottleneck):**
+##  **2. Storage (IOPS & Throughput Bottleneck):**
 
 AWS RDS storage bottlenecks depend on two factors:
 
@@ -47,7 +47,7 @@ AWS RDS storage bottlenecks depend on two factors:
 
 ---
 
-### ⚙️ **gp2 Storage: How IOPS & Throughput Work**
+###  **gp2 Storage: How IOPS & Throughput Work**
 
 - **Baseline performance** = **3 IOPS per GB** of provisioned storage.
 - Minimum: **100 IOPS**, Maximum: **16,000 IOPS**
@@ -62,7 +62,7 @@ AWS RDS storage bottlenecks depend on two factors:
 
 ---
 
-### ⚙️ **gp3 Storage: How IOPS & Throughput Work**
+###  **gp3 Storage: How IOPS & Throughput Work**
 
 - **gp3** allows **independent scaling** of IOPS and throughput, regardless of size.
 - Default: **3,000 IOPS**, **125 MiB/s throughput**.
@@ -77,7 +77,7 @@ AWS RDS storage bottlenecks depend on two factors:
 
 ---
 
-### ⚙️ **Instance-Level Storage Limits:**
+###  **Instance-Level Storage Limits:**
 
 AWS RDS instances have predefined maximum IOPS and throughput limits, regardless of provisioned storage type or size.
 
@@ -92,7 +92,7 @@ AWS RDS instances have predefined maximum IOPS and throughput limits, regardless
 
 ---
 
-## ✅ **3. Network Bottleneck:**
+##  **3. Network Bottleneck:**
 
 Each RDS instance class has defined **network bandwidth** limits. Larger instances provide higher network performance.
 
@@ -104,7 +104,7 @@ Each RDS instance class has defined **network bandwidth** limits. Larger instanc
 
 ---
 
-## 🛠️ **Logical Flow: Diagnosing the Bottleneck:**
+##  **Logical Flow: Diagnosing the Bottleneck:**
 
 Here's how to logically diagnose performance issues clearly:
 
@@ -117,7 +117,7 @@ Here's how to logically diagnose performance issues clearly:
 
 ---
 
-## 🚦 **Step-by-step to pinpoint bottleneck logically:**
+##  **Step-by-step to pinpoint bottleneck logically:**
 
 ### **Step 1: Check CPU & Memory Usage**
 
@@ -145,7 +145,7 @@ Here's how to logically diagnose performance issues clearly:
 
 ---
 
-## 📝 **Logical Summary (example scenario):**
+##  **Logical Summary (example scenario):**
 
 - Suppose you provision **gp3 storage with high IOPS (10,000)** on a **small instance type (db.m5.large)**.
   - Even though storage is provisioned for 10,000 IOPS, **the instance-level limit is around 4,750 IOPS** (for db.m5.large).
@@ -159,26 +159,26 @@ Here's how to logically diagnose performance issues clearly:
 
 ---
 
-## ✅ **How to Fix Each Bottleneck (Summary):**
+##  **How to Fix Each Bottleneck (Summary):**
 
 - **Instance bottleneck:**  
-  ✅ Upgrade to larger instance type.
+   Upgrade to larger instance type.
 
 - **Storage bottleneck (gp2):**  
-  ✅ Increase storage volume size or switch to gp3.
+   Increase storage volume size or switch to gp3.
 
 - **Storage bottleneck (gp3):**  
-  ✅ Provision more IOPS/throughput.
+   Provision more IOPS/throughput.
 
 - **Instance-level storage limit bottleneck:**  
-  ✅ Upgrade instance to one with higher storage IOPS/throughput limits.
+   Upgrade instance to one with higher storage IOPS/throughput limits.
 
 - **Network bottleneck:**  
-  ✅ Upgrade to instance type with higher network bandwidth.
+   Upgrade to instance type with higher network bandwidth.
 
 ---
 
-## 🗃️ **Logical Conclusion:**
+##  **Logical Conclusion:**
 
 - Always evaluate **instance metrics, storage metrics, and network metrics** in tandem.
 - Clearly identify if performance constraints are due to insufficient **CPU, memory, storage, or network**.
@@ -190,7 +190,7 @@ Here's a clear and logical explanation of **IOPS and Throughput** and how **gp3 
 
 ---
 
-## ✅ **Understanding IOPS vs. Throughput (Clearly Explained)**
+##  **Understanding IOPS vs. Throughput (Clearly Explained)**
 
 ### 1. **IOPS (Input/Output Operations per Second)**
 
@@ -215,7 +215,7 @@ Here's a clear and logical explanation of **IOPS and Throughput** and how **gp3 
 
 ---
 
-## 🚦 **How Are Throughput and IOPS Related? (Logical Relationship)**
+##  **How Are Throughput and IOPS Related? (Logical Relationship)**
 
 They are related by the following formula:
 
@@ -245,7 +245,7 @@ Throughput (MB/s) = (IOPS × IO size) ÷ 1024
 
 ---
 
-## ✅ **How AWS gp3 Allows Independent Scaling of IOPS & Throughput**
+##  **How AWS gp3 Allows Independent Scaling of IOPS & Throughput**
 
 AWS gp3 storage separates **capacity**, **IOPS**, and **throughput**:
 
@@ -266,7 +266,7 @@ AWS gp3 storage separates **capacity**, **IOPS**, and **throughput**:
 
 ---
 
-## ✅ **Why Instance Size Still Matters (Logical Explanation)**
+##  **Why Instance Size Still Matters (Logical Explanation)**
 
 Even if gp3 allows independent scaling, **AWS RDS instance types have built-in storage limits**:
 
@@ -290,7 +290,7 @@ Even if gp3 allows independent scaling, **AWS RDS instance types have built-in s
 
 ---
 
-## ⚙️ **Logical Example to Demonstrate Bottlenecks Clearly:**
+##  **Logical Example to Demonstrate Bottlenecks Clearly:**
 
 | Setup                                | Provisioned IOPS | Instance Limit | Actual IOPS available |
 |--------------------------------------|------------------|----------------|-----------------------|
@@ -301,7 +301,7 @@ Clearly, instance size directly impacts storage performance, no matter how high 
 
 ---
 
-## 📌 **Logical Steps to Determine Which to Upgrade (Instance or Storage):**
+##  **Logical Steps to Determine Which to Upgrade (Instance or Storage):**
 
 **Step 1: Check CloudWatch metrics**
 
@@ -319,7 +319,7 @@ Clearly, instance size directly impacts storage performance, no matter how high 
 
 ---
 
-## 📝 **Summary (Clearly & Logically):**
+##  **Summary (Clearly & Logically):**
 
 - **gp3 storage** lets you scale IOPS and throughput independently, unlike gp2.
 - **IOPS** measures how many operations you can perform per second, ideal for **transactional workloads**.
@@ -335,26 +335,23 @@ To fix a bottleneck clearly:
 
 This logical approach clearly explains the relationship between throughput, IOPS, gp3 flexibility, and instance size limitations in AWS RDS Oracle environments.
 
-
-​Certainly! Here's the information you're seeking:
-
 ---
 
-## 📌 **AWS Documentation on Instance Type IOPS and Maximum Throughput:**
+##  **AWS Documentation on Instance Type IOPS and Maximum Throughput:**
 
 To understand the IOPS and throughput capabilities of various AWS RDS instance types, you can refer to the following official AWS resources:
 
 1. **Amazon RDS Instance Types:**
    -This page provides an overview of the different RDS instance classes, including their specifications
-   - **URL:** citeturn0search2
+   - **URL:** https://aws.amazon.com/rds/instance-types/
 
 2. **DB Instance Class Types:**
    -This section offers detailed information on each DB instance class, including memory, vCPU, and network performance
-   - **URL:** citeturn0search4
+   - **URL:** https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.Types.html
 
 3. **Amazon RDS DB Instance Storage:**
    -This documentation explains storage options and their performance characteristics, including IOPS and throughput limits
-   - **URL:** citeturn0search0
+   - **URL:** TBD
 
 ---
 
@@ -364,12 +361,8 @@ To pinpoint which SQL queries or operations are generating high read or write IO
 
 1. **Amazon RDS Performance Insights:**
     Provides a dashboard to visualize database performance, helping identify queries contributing to high I/.
-   - **URL:** citeturn0search7
-
 2. **Enhanced Monitoring:**
     Offers real-time metrics for the operating system, allowing deeper analysis of I/O pattern.
-   - **URL:** citeturn0search7
-
 3. **Database-Specific Tools:**
     For SQL Server: Utilize Dynamic Management Views (DMVs) to monitor I/O statistics per quer.
     For MySQL: Use the Performance Schema to gather query I/O metric.
