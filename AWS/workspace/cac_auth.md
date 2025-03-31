@@ -149,4 +149,96 @@ Asia Pacific (Tokyo, Sydney) |
 
 ---
 
-Let me know if you'd like this exported as PDF or in Markdown format for internal documentation or Confluence!
+Great question — when you introduce **Azure Entra ID (formerly Azure AD)** with **SAML federation** into the **AWS WorkSpaces + CAC** authentication flow, the roles and mechanisms of **Pre-Session** and **In-Session CAC authentication** change **significantly**, especially in how identity is federated and where the CAC interaction happens.
+
+Let’s break it all down:
+
+---
+
+## 🧩 Key Definitions
+
+| Term | Meaning |
+|------|--------|
+| **Pre-Session CAC Auth** | Smart card used at WorkSpaces login screen to authenticate user before session starts. |
+| **In-Session CAC Auth** | Smart card is used *within* the desktop session (e.g., signing into internal apps, websites, or running privileged commands). |
+| **Azure Entra SAML Federation** | Users authenticate via **Azure Entra ID**, typically with SAML, and are **redirected from WorkSpaces** to authenticate in Entra ID (with or without CAC). |
+
+---
+
+## ✅ Standard AWS WorkSpaces CAC Flow (AD Connector)
+
+### 🔐 Pre-Session CAC Auth
+- Happens **at the WorkSpaces client login screen**.
+- WorkSpaces prompts for CAC + PIN (via mTLS).
+- Authenticates via **AD Connector** → On-prem AD + OCSP.
+- Result: User is logged into WorkSpace after certificate validation.
+
+### 🧾 In-Session CAC Auth
+- CAC redirection happens via WSP protocol.
+- User can use smart card for:
+  - Logging into websites
+  - Signing documents
+  - Sudo/sudo -i (Linux)
+- Requires client support + redirection + PKI middleware.
+
+---
+
+## 🟦 When You Use **Azure Entra ID SAML Federation** with CAC
+
+### 🔁 What changes:
+
+| Area | Behavior |
+|------|----------|
+| **Pre-Session Auth** | 🔄 *No longer handled by WorkSpaces natively*. Entra ID handles authentication via SAML. |
+| **Who prompts for CAC?** | Azure Entra ID (via web-based login) prompts for CAC — WorkSpaces doesn’t interact with the smart card. |
+| **Directory Type** | Usually **AWS Managed Microsoft AD** or **AD Connector**, federated via SAML to Entra ID. |
+| **WorkSpaces Login Experience** | User launches WorkSpace → redirected to Entra ID login page (web) → authenticates using CAC (via ADFS/Entra). |
+| **mTLS / RADIUS** | Not required in AWS anymore — Entra ID handles the CAC logic and cert validation. |
+
+---
+
+## ✅ How In-Session CAC Still Works
+
+In-session smart card use **does NOT depend on SAML federation** — it still works normally:
+
+- WSP protocol enables smart card redirection.
+- User’s client device must have:
+  - CAC reader
+  - Supported AWS WorkSpaces client (Windows/macOS)
+  - Middleware (e.g., ActivClient, OpenSC)
+
+> ✅ The user can still use the smart card for in-session apps: VPN, DoD portals, digital signatures, etc.
+
+---
+
+## 🔐 Summary of Key Differences
+
+| Feature | AD Connector w/ AWS CAC | Entra ID + SAML + CAC |
+|--------|--------------------------|------------------------|
+| Pre-session CAC | Handled by AWS WorkSpaces (via mTLS) | Handled by Entra ID via SAML |
+| In-session CAC | Supported | Supported |
+| Who validates CAC cert? | AD Connector + OCSP | Azure Entra / ADFS |
+| Client login experience | WorkSpaces client shows cert prompt | WorkSpaces client redirects to SAML login (browser-based) |
+| Additional infra needed | RADIUS, OCSP, mTLS | Azure AD, ADFS, CAC-enabled IdP |
+| CAC use in-session (e.g., websites, sudo) | ✅ Supported | ✅ Supported |
+
+---
+
+## 🧠 Important Notes
+
+- If you already use **CAC with Entra ID**, you don’t need to double-up with WorkSpaces’ pre-session CAC — you're already handling CAC at the **federated identity layer**.
+- In this model, **WorkSpaces becomes a service provider (SP)** that trusts **Entra ID as the identity provider (IdP)**.
+
+---
+
+## 🧾 Recommendation
+
+If you're federating WorkSpaces with **Azure Entra ID + CAC**:
+
+- Use **Entra ID** for CAC-based SAML login (**skip WorkSpaces native CAC**).
+- Keep **smart card redirection enabled** for in-session use.
+- Use **WSP protocol** for full redirection support (ports: `443`, `4195`, `UDP 50002-50003`).
+- Ensure client is Windows/macOS WorkSpaces client v3.1.1+.
+
+---
+
