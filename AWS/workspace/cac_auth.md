@@ -241,4 +241,134 @@ If you're federating WorkSpaces with **Azure Entra ID + CAC**:
 - Ensure client is Windows/macOS WorkSpaces client v3.1.1+.
 
 ---
+Here’s a detailed explanation of the **two CAC authentication scenarios** for **AWS WorkSpaces**:
+
+---
+
+# 🪪 Detailed Comparison: Pre-Session CAC vs. Azure Entra ID SAML CAC + In-Session CAC
+
+---
+
+## ✅ **Scenario 1: AWS Native Pre-Session CAC Authentication (Using AD Connector)**
+
+### 🔐 Goal: Use CAC to log in **directly into WorkSpaces**, with full certificate validation via Active Directory.
+
+---
+
+### 🔁 Authentication Flow
+
+1. **User launches the AWS WorkSpaces client** (Windows/macOS).
+2. Client shows a **smart card login prompt** (pre-session).
+3. User inserts **CAC**, enters **PIN**.
+4. WorkSpaces establishes a **mutual TLS (mTLS)** connection with **AD Connector**.
+5. AD Connector:
+   - Validates the cert chain against **on-prem root CA**.
+   - Uses **OCSP** for cert revocation checks.
+   - Matches cert UPN with Active Directory `userPrincipalName`.
+6. If cert is valid:
+   - User is logged into the WorkSpace session.
+
+---
+
+### 📥 In-Session CAC Use
+
+Once inside the session (Windows or Linux):
+
+- Smart card redirection via **WSP** protocol allows:
+  - Signing emails/documents
+  - Website logins (DoD portals, VPN)
+  - `sudo` auth on Linux
+- Requires CAC reader and drivers on the local machine.
+- Smart card redirection is seamless if enabled via GPO.
+
+---
+
+### 🧰 Technical Requirements
+
+| Component | Requirement |
+|----------|-------------|
+| Directory | **AD Connector** (not AWS Managed AD) |
+| CAC Certs | Must have UPN in SAN, Client Auth EKU, Smart Card Logon EKU |
+| Revocation | **OCSP** required |
+| Client | Windows/macOS WorkSpaces client (3.1.1+) |
+| Protocol | **WSP** required for redirection (`443`, `4195`, `UDP 50002-50003`) |
+
+---
+
+## 🟦 **Scenario 2: Azure Entra ID SAML Federation with CAC + In-Session CAC**
+
+### 🔐 Goal: Use **Azure Entra ID (SAML)** to handle CAC-based login; AWS WorkSpaces trusts Entra as IdP.
+
+---
+
+### 🔁 Authentication Flow (Pre-Session via SAML)
+
+1. **User launches WorkSpaces client**.
+2. WorkSpaces redirects user to **Azure Entra ID SAML login page** (browser-based).
+3. Entra ID uses:
+   - **Integrated CAC authentication**, via ADFS, PIV, or external IdP.
+   - Certificate matching and revocation checking handled **by Entra ID / ADFS**.
+4. Once authenticated:
+   - Azure Entra returns a **SAML assertion** to AWS.
+   - WorkSpaces grants session access.
+
+> 📌 In this model, **AWS never touches the smart card directly** — Entra/ADFS handles cert validation and UPN mapping.
+
+---
+
+### 📥 In-Session CAC Use
+
+- Same as native mode:
+  - CAC redirection works for apps inside the WorkSpace.
+  - Requires WSP protocol.
+  - CAC reader + middleware needed on user device.
+- Common uses:
+  - Sign documents (Adobe, Word)
+  - VPN login
+  - PKI-auth websites (DTS, OWA, etc.)
+
+---
+
+### 🧰 Technical Requirements
+
+| Component | Requirement |
+|----------|-------------|
+| Directory | AWS Managed AD or AD Connector (doesn’t do CAC) |
+| IdP | **Azure Entra ID (w/ CAC-enabled auth)** |
+| Protocol | SAML 2.0 |
+| CAC Certs | Managed and validated by Entra ID / ADFS |
+| Client | WorkSpaces client (Windows/macOS) |
+| Smart Card Redirection | Via WSP protocol in-session |
+
+---
+
+## 🔍 Side-by-Side Summary
+
+| Feature | AWS Pre-Session CAC | Azure Entra SAML CAC |
+|--------|----------------------|----------------------|
+| CAC Prompt | In WorkSpaces client | In browser (Entra login) |
+| Who Validates Cert | AD Connector (mTLS) | Azure Entra ID / ADFS |
+| OCSP Required | ✅ Yes | ✅/⚠️ Yes (via ADFS/Entra) |
+| Smart Card Redirection | ✅ Yes | ✅ Yes |
+| In-Session CAC Apps | ✅ Supported | ✅ Supported |
+| Web Client Support | ❌ No | ❌ No |
+| Protocol | mTLS + WSP | SAML + WSP |
+| Directory Integration | AD Connector only | AWS Managed AD or AD Connector |
+| Complexity | Medium | High (requires SAML + CAC setup in Entra) |
+| Port Requirements | 443, 4195, 50002-50003 | Same (WSP required for in-session) |
+
+---
+
+## 💡 Choosing the Right Model
+
+| Use Case | Recommended Model |
+|----------|-------------------|
+| You already use Azure Entra CAC authentication | ✅ Use **SAML federation + CAC** |
+| You need DoD-compliant native CAC login via AWS | ✅ Use **AD Connector + mTLS CAC** |
+| You need browser-based WorkSpaces login with CAC | ❌ Not supported yet |
+| You only need in-session CAC (e.g., websites/apps) | ✅ Both models work |
+
+---
+
+
 
