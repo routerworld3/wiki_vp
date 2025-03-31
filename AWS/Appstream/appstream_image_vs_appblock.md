@@ -13,4 +13,4 @@ This overview should clarify which Amazon AppStream 2.0 fleet type is suitable f
 | **Active Directory Domain Join**     | Not supported                             |  Supported                                  |  Supported                                 |
 | **Application Delivery Method**      | Portable applications (VHD uploaded to S3) | Custom image (installed apps)                | Custom image (installed apps)                |
 | **Application Portability Required** |  Yes (must support portability)          |  Not required                               |  Not required                              |
-| **Domain Join (Active Directory)**   |  No                                      |  Yes
+| **Domain Join (Active Directory)**   |  No                                      |  Yes                                         | yes
