@@ -327,8 +327,104 @@ These are often the **default output claims** in Microsoft Entra ID and ADFS SAM
 | `schemas.microsoft.com/ws/2008/06/identity/claims` | Extended/custom claims (groups, auth method) | ADFS, complex apps needing SID/group details |
 
 ---
+Absolutely! Here’s the updated explanation including a clear **intro to what a namespace and schema are in the context of SAML**, followed by details on the two Microsoft-specific schemas you're seeing:
 
-Let me know if you'd like a full SAML attribute map for AWS WorkSpaces or another app!
+---
+
+# 🔍 Understanding SAML Namespaces and Schema URIs
+
+## 📘 What is a Namespace in SAML?
+
+In **SAML (Security Assertion Markup Language)**, a **namespace** is an XML construct used to **uniquely identify a set of attribute names** (claims), without conflict or ambiguity.
+
+- Think of it as a **"naming system" or "context"** that tells the SAML processor where the attribute names come from and how to interpret them.
+- Namespaces are often expressed as **URIs (Uniform Resource Identifiers)**, but they don't always resolve to a webpage.
+- These URIs define the **schema** or format of claims in the assertion.
+
+> 🧠 You can think of it like a **"prefix" that ensures standardization** across identity providers and consumers.
+
+---
+
+## 🧩 What is a SAML Schema?
+
+A **schema** in this context refers to the **set of rules and definitions** that describe:
+- What claim types exist (e.g., `email`, `upn`, `role`)
+- How they should be formatted
+- How they map to user attributes in a directory
+
+---
+
+# 📦 Common Microsoft SAML Claim Schemas (Namespaces)
+
+When using SAML with **Microsoft identity systems** (like **Azure Entra ID**, **ADFS**, or other Microsoft-based IdPs), you often see two key namespaces in SAML responses:
+
+---
+
+## ✅ 1. `http://schemas.xmlsoap.org/ws/2005/05/identity/claims/`
+
+### 🔗 Source:
+- Part of the **WS-Federation standard** introduced by Microsoft.
+- Widely used in **ADFS**, **Azure Entra ID**, and **third-party apps** that rely on Microsoft directory attributes.
+
+### 💡 Purpose:
+This namespace contains the **core, standardized set of identity claims**.
+
+### 🔑 Common Claim URIs:
+| Claim | Full URI | Description |
+|-------|----------|-------------|
+| UPN | `.../upn` | UserPrincipalName (e.g., jdoe@domain.com) |
+| Email | `.../emailaddress` | User's email address |
+| Name | `.../name` | Display name |
+| Given Name | `.../givenname` | First name |
+| Surname | `.../surname` | Last name |
+| Role | `.../role` | Group or role assignment |
+
+These are the **default claims** emitted by Azure AD and ADFS when issuing SAML tokens.
+
+---
+
+## ✅ 2. `http://schemas.microsoft.com/ws/2008/06/identity/claims/`
+
+### 🔗 Source:
+- A **Microsoft extension** of the WS-Fed/SAML claim model.
+- Adds **more advanced claims**, especially for group SIDs, authentication context, and access control.
+
+### 💡 Purpose:
+Used for scenarios that require **fine-grained identity and authorization attributes** (e.g., claims-based access control or group-based filtering).
+
+### 🔑 Common Claim URIs:
+| Claim | Full URI | Description |
+|-------|----------|-------------|
+| Groups | `.../groups` | AD Group SIDs for the user |
+| Authentication Method | `.../authenticationmethod` | Indicates method used (e.g., smartcard, MFA) |
+| Deny-Only SID | `.../denyonlysid` | SID for deny-only access control |
+
+---
+
+# 🧪 Example SAML Assertion with Both Namespaces
+
+```xml
+<saml:Attribute Name="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn">
+  <saml:AttributeValue>jdoe@domain.com</saml:AttributeValue>
+</saml:Attribute>
+
+<saml:Attribute Name="http://schemas.microsoft.com/ws/2008/06/identity/claims/groups">
+  <saml:AttributeValue>S-1-5-21-1234567890-2345678901-3456789012-1001</saml:AttributeValue>
+</saml:Attribute>
+```
+
+---
+
+## ✅ Summary
+
+| Namespace | Purpose | Common Use |
+|-----------|---------|------------|
+| `http://schemas.xmlsoap.org/ws/2005/05/identity/claims/` | Core identity claims (UPN, name, email, role) | ADFS, Azure Entra ID, most SAML apps |
+| `http://schemas.microsoft.com/ws/2008/06/identity/claims/` | Extended identity and group claims (SIDs, auth methods) | Advanced access control, conditional access policies |
+
+---
+
+Would you like a reference table mapping these SAML claims to AWS WorkSpaces or Azure AD attribute names?
 
 
 
