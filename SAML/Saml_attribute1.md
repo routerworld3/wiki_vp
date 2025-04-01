@@ -1,4 +1,3 @@
-Absolutely! Here’s the **updated and consolidated document** that includes:
 
 - An intro to **SAML namespaces** and **schemas**
 - Clear explanations of all three common Microsoft SAML/claim namespaces:
