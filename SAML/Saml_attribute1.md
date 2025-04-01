@@ -141,4 +141,4 @@ Conveys **Azure-specific metadata** like tenant ID, user object ID, and authenti
 
 ---
 
-Let me know if you'd like this exported to PDF, Markdown, or Confluence-ready format!
+
