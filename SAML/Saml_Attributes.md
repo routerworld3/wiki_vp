@@ -1,7 +1,3 @@
-Great question — this is often one of the most confusing parts of SAML!
-
-Let’s break down **how SAML attribute names work** and how they’re agreed upon between the **Identity Provider (IdP)** and **Service Provider (SP)** or **App**.
-
 ---
 
 ## 🧠 What Are SAML Attributes?
