@@ -249,6 +249,86 @@ Use tools like **SAML Tracer** to inspect what is actually sent in assertions.
   - Select the **Fleets** tab to clearly see the fleet type labeled (**Elastic**, **Always-On**, or **On-Demand**).
 
 ---
+Great observation — the two namespaces you're seeing (`schemas.xmlsoap.org` and `schemas.microsoft.com`) in SAML attributes are standard **XML namespaces** used in **SAML assertions**, particularly for **Microsoft environments** (like Azure Entra ID, ADFS, or custom SAML IdPs).
+
+Let me break them down:
+
+---
+
+## 📘 1. `http://schemas.xmlsoap.org/ws/2005/05/identity/claims/`
+
+### ✅ Source:
+- This is part of **WS-Federation** and **claims-based identity** standards.
+- Originally defined by **Microsoft** as part of their support for **passive SAML-based federation**.
+- Widely used in **ADFS**, **Azure AD / Entra ID**, and **many custom SAML implementations**.
+
+### 🔎 Common SAML Attributes from this Schema:
+
+| Claim URI | Description |
+|-----------|-------------|
+| `.../nameidentifier` | Unique user identifier (like UPN or email) |
+| `.../upn` | UserPrincipalName |
+| `.../emailaddress` | Email address |
+| `.../givenname` | First name |
+| `.../surname` | Last name |
+| `.../name` | Display name |
+| `.../role` | Group/role info |
+| `.../groups` | AD group claims |
+
+These are often the **default output claims** in Microsoft Entra ID and ADFS SAML responses.
+
+---
+
+## 📘 2. `http://schemas.microsoft.com/ws/2008/06/identity/claims/`
+
+### ✅ Source:
+- Also defined by **Microsoft**, introduced later to extend the claim types used in more advanced federation setups.
+- This is used more commonly in **claims-aware applications** or **when custom claims are added** in ADFS/Azure AD.
+
+### 🔎 Common Uses:
+
+| Claim URI | Description |
+|-----------|-------------|
+| `.../groups` | SID-based group claims (used with tokenGroup claims) |
+| `.../denyonlysid` | Deny-only SID claims |
+| `.../authenticationmethod` | How the user authenticated (e.g., password, MFA, smart card) |
+
+---
+
+## 🔍 Why Both Exist?
+
+- **Legacy vs Modern**:
+  - `schemas.xmlsoap.org` → older WS-Fed & early SAML 2.0 support (still very widely used)
+  - `schemas.microsoft.com` → newer claims added for extended functionality
+- **Interoperability**:
+  - Microsoft apps (like SharePoint, Exchange, or WorkSpaces) support both.
+
+---
+
+## 📦 Example from a SAML Assertion
+
+```xml
+<saml:Attribute Name="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn">
+  <saml:AttributeValue>jdoe@domain.com</saml:AttributeValue>
+</saml:Attribute>
+
+<saml:Attribute Name="http://schemas.microsoft.com/ws/2008/06/identity/claims/groups">
+  <saml:AttributeValue>S-1-5-21-...</saml:AttributeValue>
+</saml:Attribute>
+```
+
+---
+
+## ✅ Summary
+
+| Namespace | Purpose | Common In |
+|-----------|---------|-----------|
+| `schemas.xmlsoap.org/ws/2005/05/identity/claims` | Core identity claims (UPN, name, email, role) | ADFS, Azure Entra, SAML apps |
+| `schemas.microsoft.com/ws/2008/06/identity/claims` | Extended/custom claims (groups, auth method) | ADFS, complex apps needing SID/group details |
+
+---
+
+Let me know if you'd like a full SAML attribute map for AWS WorkSpaces or another app!
 
 
 
