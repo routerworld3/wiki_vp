@@ -1,4 +1,4 @@
-Sure — let’s walk through the **mTLS CAC Authentication** process in **AWS WorkSpaces**, step-by-step, focusing on:
+**mTLS CAC Authentication** process in **AWS WorkSpaces**, step-by-step, focusing on:
 
 - What **mTLS (mutual TLS)** really means in this context
 - How AWS uses it with **AD Connector** to authenticate a user using a **CAC (Common Access Card)**
