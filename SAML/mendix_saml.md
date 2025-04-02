@@ -125,5 +125,114 @@ These tags are visible in the XML, but **Azure doesn't parse or act on them**.
 So, as long as you're not changing `Entity ID` or `ACS URL`, you're good — updating contact/branding info is completely safe.
 
 ---
+You're diving into the right details — and you're absolutely right to think through the implications of **metadata signing** and **encryption** settings in Mendix. Let’s unpack your observations and clarify what’s happening:
 
+---
 
+## 🔍 Your Observations and What They Mean
+
+### 🔹 1. **SP Metadata is Signed (per Mendix docs)**
+> Yes, the documentation mentions that the SP metadata **can be signed**, but **only if** you’ve configured the **SP private key and certificate** inside the SAML module settings.
+
+If you haven't uploaded a signing certificate and private key, then:
+- **The metadata is not actually signed**, even if it mentions it can be
+- There’s no `<ds:Signature>` element in the XML
+- And therefore, **changing `ContactPerson` or `Organization` has no impact**
+
+✅ That’s why you didn’t see any issues after editing those fields — because there’s no signature to break.
+
+---
+
+### 🔹 2. **No `<ds:Signature>` or Cert Block in Metadata**
+> If you look at the `/SSO/metadata` output and **don’t see** a `<ds:Signature>` or `<KeyDescriptor use="signing">`, then your **SP metadata is not signed**.
+
+This is **perfectly fine and valid** — Azure Entra ID **does not require signed SP metadata** and doesn’t validate it.
+
+---
+
+### 🔹 3. **SAML Encryption is Unchecked**
+> Right again — by default, **Azure Entra ID doesn’t support encrypted SAML assertions** unless you have **Azure AD Premium P1 or P2**, and configure it manually via PowerShell.
+
+In Mendix:
+- If **"Encrypt Assertions" is unchecked**, then:
+  - The SP does **not require decryption keys**
+  - Azure will send **plain (but signed) SAML assertions**, which Mendix will happily accept
+
+✅ This is the **recommended setup** for standard Azure Entra ID integrations unless you specifically need encrypted assertions and have a premium license.
+
+---
+
+## ✅ Summary of Key Points
+
+| Feature                        | Status in Your Case     | Impact                                   |
+|-------------------------------|--------------------------|-------------------------------------------|
+| SP Metadata Signed            | ❌ Not really (no cert)   | No issue changing informational fields    |
+| `<ds:Signature>` in Metadata  | ❌ Missing                | Confirms metadata isn’t signed            |
+| Encryption Enabled            | ❌ Disabled (Unchecked)   | Works fine with Azure Entra ID (default)  |
+| Changing Contact/Org Fields   | ✅ Safe                   | Azure ignores them                        |
+
+---
+
+### 🧠 Pro Tip:
+If you **do** need to enable metadata signing in the future (e.g., for a third-party IdP that requires it), you’ll need to:
+1. Upload a valid **private key** and **public certificate** in the SP configuration
+2. Re-download the SP metadata — now it will include `<ds:Signature>`
+3. Be careful with changes after that point — signature integrity matters
+
+---
+
+You're **spot on** with the core concept — and you're asking a super important question about **signing vs encryption** in SAML.
+
+Let’s break it down clearly:
+
+---
+
+## ✅ You're Correct — Here's the Clarification:
+
+### 🔐 1. **SAML Assertion/Response is Signed by Azure Entra ID (IdP)**
+
+- **Yes**: When Azure Entra ID sends a SAML Response (or just the Assertion), it signs it using **Azure’s private key**.
+- Mendix (the SP) validates it using the **Azure public key** (which comes from the IdP metadata you upload in Mendix).
+- This proves the assertion is **authentic and unmodified**.
+
+### 🔒 2. **Assertion Can Be Encrypted in the Future (Optional)**
+
+- **Yes**: Azure *can* encrypt the SAML assertion if:
+  - The SP (Mendix) provides a **public encryption certificate** in its metadata.
+  - You have **Azure AD Premium P1/P2**, because encryption is a premium-only feature.
+  - You configure Azure manually (e.g., via PowerShell) to **enable encryption**.
+
+In that case:
+- Azure uses your **SP's public key** to encrypt the SAML assertion.
+- Mendix uses the **matching private key** to decrypt it.
+
+> ✅ So yes: **Azure signs with its own private key**, and **can encrypt using your SP’s public key** — but only if configured.
+
+---
+
+## 🔁 Signing vs Encryption in SAML (Simple View)
+
+| Feature       | Who Does It | Using What?                  | Purpose                                      |
+|---------------|-------------|------------------------------|----------------------------------------------|
+| **Signing**   | Azure (IdP) | Azure's Private Key          | Validate authenticity of response/assertion  |
+| **Encryption**| Azure (IdP) | **SP's Public Key** (yours)  | Ensure only your SP can read the assertion   |
+
+---
+
+## 🔧 In Your Mendix App:
+
+- ✅ **Signing** is always expected and required — and Mendix already validates this using the Azure metadata.
+- ❌ **Encryption** is **off by default** — and not needed unless you have a specific security/compliance requirement **and** Azure P1/P2 license.
+
+---
+
+## 🧠 Final Thoughts:
+
+- You’re totally right in saying:  
+  > "SAML Response/Assertion is signed by Azure Entra ID private key and in future **can be** encrypted by SP public key."
+
+- This is exactly how optional encryption works in the SAML spec and how Azure implements it.
+
+---
+
+Let me know if you want to test SAML encryption in a lab or generate a sample encryption certificate for Mendix!
