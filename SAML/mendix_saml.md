@@ -66,4 +66,64 @@ So yes — that’s confirmation from the source that these fields like `Organiz
 
 ---
 
-Let me know if you want help filling in any specific field or mapping Azure claims to Mendix user attributes — I can provide example configs or microflows too!
+Exactly — you're spot on again. Here's the detailed confirmation:
+
+---
+
+### ✅ Changing `Organization Name` and `Contact Person` in SP Metadata **won’t break** the app.
+
+#### Why?
+
+Because:
+- Azure AD (Entra ID) **doesn't use or validate** those fields.
+- It **only cares about**:
+  - **ACS URL** (`AssertionConsumerService`)
+  - **Entity ID** (aka Identifier)
+  - **SAML certificates** (for signing/encryption)
+  - Optionally: NameID format & claim mappings
+
+Fields like:
+- `Organization`
+- `DisplayName`
+- `ContactPerson` (technical/support contact)
+
+...are purely **informational** in the **SP metadata XML**, and Azure simply **ignores them**.
+
+---
+
+### 🔍 Proof in SP Metadata
+
+If you inspect your Mendix-generated SP metadata (`/SSO/metadata`), it includes something like this:
+
+```xml
+<md:Organization>
+  <md:OrganizationName xml:lang="en">Your Org Name</md:OrganizationName>
+  <md:OrganizationDisplayName xml:lang="en">Your App</md:OrganizationDisplayName>
+  <md:OrganizationURL xml:lang="en">https://yourapp.mendixcloud.com</md:OrganizationURL>
+</md:Organization>
+
+<md:ContactPerson contactType="technical">
+  <md:GivenName>John Doe</md:GivenName>
+  <md:EmailAddress>john.doe@example.com</md:EmailAddress>
+</md:ContactPerson>
+```
+
+These tags are visible in the XML, but **Azure doesn't parse or act on them**.
+
+---
+
+### ✅ Conclusion:
+
+| Field                  | Safe to change? | Used by Azure AD? | Purpose                          |
+|------------------------|-----------------|-------------------|----------------------------------|
+| `OrganizationName`     | ✅ Yes          | ❌ No              | Informational metadata           |
+| `DisplayName`          | ✅ Yes          | ❌ No              | Human-readable name              |
+| `ContactPerson`        | ✅ Yes          | ❌ No              | For metadata consumers (humans)  |
+| `Entity ID`            | ⚠️ No          | ✅ Yes             | Used for trust/validation        |
+| `ACS URL`              | ⚠️ No          | ✅ Yes             | Where Azure posts the SAML       |
+
+So, as long as you're not changing `Entity ID` or `ACS URL`, you're good — updating contact/branding info is completely safe.
+
+---
+
+
