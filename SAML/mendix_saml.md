@@ -2,9 +2,9 @@ Yes, you're exactly right — and your understanding is on point. The **SP Confi
 
 ---
 
-### 🧩 Clarifying the Configuration Flow
+###  Clarifying the Configuration Flow
 
-#### ✅ 1. **Start with SP Configuration in Mendix**
+####  1. **Start with SP Configuration in Mendix**
 Yes — you should **start with the SP Configuration** in Mendix first. Why?
 
 Because it:
@@ -22,7 +22,7 @@ These get baked into the **SP Metadata**, which is downloadable after you save t
 
 ---
 
-#### ✅ 2. **Then Configure IdP (Azure Entra ID)**
+####  2. **Then Configure IdP (Azure Entra ID)**
 
 Once the SP configuration is complete:
 - Download the SP metadata from Mendix `/SSO/` page
@@ -31,20 +31,20 @@ Once the SP configuration is complete:
 
 ---
 
-#### ✅ 3. **Import IdP Metadata into Mendix**
+#### 3. **Import IdP Metadata into Mendix**
 
 After Azure config is complete:
 - Download the **Azure Federation Metadata XML**
 - Upload it into Mendix in the **IdP Configuration** section
 
 This auto-fills fields like:
-- IdP SSO URL
+- IdP Metadata URL
 - IdP Entity ID
 - X.509 Signing Certificate
 
 ---
 
-### 🧭 Quick Order of Operations
+###  Quick Order of Operations
 
 | Step | Task                                     | Purpose                                                  |
 |------|------------------------------------------|----------------------------------------------------------|
@@ -57,8 +57,8 @@ This auto-fills fields like:
 
 ---
 
-### 📘 Reference: Mendix Docs
-You're also correct that Mendix explains this in their [official documentation here](https://docs.mendix.com/appstore/modules/saml/). Specifically:
+###  Reference: Mendix Docs
+Mendix explains this in their [official documentation here](https://docs.mendix.com/appstore/modules/saml/). Specifically:
 
 > *“All of the fields in the SP configuration tab are used when the SP Metadata is generated. This metadata can be used to set up the SAML configuration in the IdP.”*
 
@@ -66,11 +66,7 @@ So yes — that’s confirmation from the source that these fields like `Organiz
 
 ---
 
-Exactly — you're spot on again. Here's the detailed confirmation:
-
----
-
-### ✅ Changing `Organization Name` and `Contact Person` in SP Metadata **won’t break** the app.
+###  Changing `Organization Name` and `Contact Person` in SP Metadata **won’t break** the app.
 
 #### Why?
 
@@ -91,7 +87,7 @@ Fields like:
 
 ---
 
-### 🔍 Proof in SP Metadata
+###  Proof in SP Metadata
 
 If you inspect your Mendix-generated SP metadata (`/SSO/metadata`), it includes something like this:
 
@@ -112,7 +108,7 @@ These tags are visible in the XML, but **Azure doesn't parse or act on them**.
 
 ---
 
-### ✅ Conclusion:
+### Conclusion:
 
 | Field                  | Safe to change? | Used by Azure AD? | Purpose                          |
 |------------------------|-----------------|-------------------|----------------------------------|
