@@ -14,7 +14,7 @@ It uses YAML inputs to drive role/group creation and integrates Certificate-Base
 | Step | Description | Resource(s) | File |
 |------|-------------|-------------|------|
 | 1 | Parse YAML input | `locals` | `locals.tf` |
-| 2 | Create App Registration | `azuread_application`<br>⚙️ *Defines identity and permission model for an app* | `entra_aws_accounts.tf` |
+| 2 | Create App Registration | `azuread_application`<br> *Defines identity and permission model for an app* | `entra_aws_accounts.tf` |
 | 3 | Create Enterprise App (SP) | `azuread_service_principal`<br> *Acts as the runtime identity of the application in the tenant* | `entra_aws_accounts.tf` |
 | 4 | Define App Roles | Part of `azuread_application`<br> *Custom roles that can be assigned to users/groups for access control* | `entra_aws_accounts.tf` |
 | 5 | Create Groups per Role | `azuread_group` | `group_aws_accounts.tf` |
