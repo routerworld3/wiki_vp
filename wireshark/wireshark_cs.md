@@ -87,3 +87,115 @@ Below is a concise Wireshark cheat sheet focused on diagnosing slow network conn
 ---
 
 This collection of tables and notes should help you quickly filter and identify common causes for slow network connections or host issues in Wireshark. Adjust thresholds (like `0.2` seconds for delays or `1` second for DNS queries) based on your actual environment.
+
+Below is a concise cheat sheet for using **PktMon** (Windows) and **tcpdump** (Linux/Unix-like systems) to capture, stop, convert, and filter network traffic. You can convert or open captures in Wireshark, allowing deeper analysis of network issues.
+
+---
+
+## 1. PktMon (Windows)
+
+PktMon is a built-in Windows packet monitoring tool introduced in Windows 10 (version 2004). It captures network traffic at the OS level and outputs an .etl file, which can be converted to pcapng or text for Wireshark or other tools.
+
+### 1.1 Basic Capture Workflow
+
+| **Action**                     | **Command**                                                                                                                                                             | **Notes**                                                                                 |
+|--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
+| **Start Capture**              | `pktmon start --capture --comp nics --flags 0x10 --file capture.etl`                                                                                                   | - `--comp nics` targets NIC-level components.<br>- `--flags 0x10` captures all packets.  |
+| **Stop Capture**               | `pktmon stop`                                                                                                                                                           | Halts the capture and finalizes the `.etl` file.                                         |
+| **Convert to Text (.txt)**     | `pktmon format capture.etl -o capture.txt`                                                                                                                              | Generates a human-readable text file (limited for deep analysis).                         |
+| **Convert to PCAPNG (.pcapng)**| `pktmon pcapng capture.etl -o capture.pcapng`                                                                                                                           | `capture.pcapng` can be opened directly in Wireshark.                                    |
+
+### 1.2 Common Notes & Options
+
+- **Filters**: PktMon filtering is limited compared to tcpdump; typically you capture everything, then rely on Wireshark or other analyzers for specific filters.
+- **Administrative Privileges**: You must run `pktmon` from an elevated command prompt (Run as Administrator).
+
+---
+
+## 2. tcpdump (Linux/Unix/macOS)
+
+tcpdump is a powerful command-line packet analyzer. By default it writes output in PCAP format, which is directly compatible with Wireshark.
+
+### 2.1 Basic Capture Workflow
+
+| **Action**                       | **Command**                                                                                           | **Notes**                                                                                               |
+|----------------------------------|--------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| **Start Capture to File**        | `tcpdump -i eth0 -w capture.pcap`                                                                     | - Captures on `eth0` interface.<br>- Press **Ctrl + C** to stop capture.                                |
+| **Stop Capture**                 | *(Use Ctrl + C)*                                                                                      | tcpdump will finalize and close the capture file.                                                       |
+| **Read/Analyze Capture**         | `tcpdump -r capture.pcap`                                                                             | View contents in the terminal (summary of packets).                                                     |
+| **Convert to PCAP**             | *(No conversion needed)*                                                                               | tcpdump already outputs PCAP. Wireshark can open `.pcap` files directly.                                |
+| **Capture Headers Only**         | `tcpdump -i eth0 -s 100 -w capture_headers.pcap`                                                      | - `-s 100` limits the snapshot length to 100 bytes (enough to get most headers).                         |
+| **View in ASCII (on screen)**    | `tcpdump -i eth0 -A`                                                                                  | - Does not save to a file—prints ASCII data of packets to stdout.                                       |
+
+> **Tip**: If you want the full packet, set `-s 0` (no snaplength limit).
+
+### 2.2 Example Filter Syntax
+
+tcpdump uses [BPF (Berkeley Packet Filter)](https://www.tcpdump.org/manpages/pcap-filter.7.html) expressions. Below are some common examples:
+
+| **Filter**                         | **Command**                                                                   | **Description**                                                                     |
+|-----------------------------------|-------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|
+| **Filter by Host**                | `tcpdump -i eth0 host 192.168.1.10 -w host_capture.pcap`                      | Captures traffic to/from a specific IP.                                             |
+| **Filter by Port**                | `tcpdump -i eth0 port 80 -w port80.pcap`                                      | Captures traffic on port 80.                                                        |
+| **Filter by Multiple Ports**      | `tcpdump -i eth0 'port 80 or port 443' -w web_ports.pcap`                     | Captures HTTP (80) or HTTPS (443) traffic.                                          |
+| **Exclude a Port**                | `tcpdump -i eth0 'not port 22' -w no_ssh.pcap`                                 | Captures everything except SSH.                                                     |
+| **Combine IP & Port**             | `tcpdump -i eth0 'host 192.168.1.10 and port 80' -w combined.pcap`            | Only captures traffic from 192.168.1.10 on port 80.                                 |
+| **TCP Only**                      | `tcpdump -i eth0 tcp -w tcp_only.pcap`                                        | Captures only TCP traffic (excludes UDP, ICMP, etc.).                               |
+| **Capture TCP SYN**               | `tcpdump -i eth0 'tcp[tcpflags] & (tcp-syn) != 0' -w syn_only.pcap`           | Only captures TCP SYN packets.                                                      |
+| **Capture Specific Traffic Size** | `tcpdump -i eth0 'tcp and greater 1000' -w large_tcp.pcap`                    | Captures TCP packets larger than 1000 bytes.                                        |
+| **Capture with Time-based Filter**| `tcpdump -G 60 -W 5 -w capture-%Y%m%d-%H%M%S.pcap`                             | Rotates capture files every 60 seconds, keeping 5 files total (ring buffer).        |
+
+### 2.3 Advanced Options
+
+| **Option**            | **Meaning**                                                                                                             |
+|-----------------------|-------------------------------------------------------------------------------------------------------------------------|
+| `-i <interface>`      | Specify which interface (e.g., `eth0`, `en0`) to capture from.                                                           |
+| `-w <filename>`       | Write the raw packets to file in PCAP format (Wireshark-compatible).                                                     |
+| `-r <filename>`       | Read packets from file (offline analysis).                                                                              |
+| `-s <snaplen>`        | Maximum bytes captured per packet (default often 96 or 65535, `-s 0` for the whole packet).                             |
+| `-v`, `-vv`, `-vvv`   | Increase verbosity (shows more header details).                                                                          |
+| `-G <seconds>`        | Rotate capture files every N seconds (when used with `-w`).                                                              |
+| `-C <MB>`             | Rotate capture files when they reach a size of `<MB>` megabytes.                                                         |
+| `-W <count>`          | Used with `-C` or `-G` to limit the number of files in a ring buffer.                                                    |
+| `-A` or `-X`          | Print packet data in ASCII (`-A`) or Hex/ASCII (`-X`) to stdout (doesn’t write pcap).                                    |
+| `-nn`                 | Do not convert addresses or ports to names (faster output, raw numbers only).                                            |
+
+---
+
+## 3. Putting It All Together
+
+1. **Windows**:  
+   - Use **PktMon** to capture network traffic if you cannot install other tools.  
+   - Convert the `.etl` file to `.pcapng` (`pktmon pcapng capture.etl -o capture.pcapng`), then open it in Wireshark for deeper analysis.
+
+2. **Linux/Unix/macOS**:  
+   - Use **tcpdump** to capture `.pcap` files directly.  
+   - Apply BPF filters to narrow down traffic (e.g., specific ports, hosts, protocols).  
+   - Load `.pcap` files in Wireshark for graphical analysis.
+
+3. **Combining Filters**:  
+   - For performance or slow-network investigations, focus on retransmissions, handshake failures, or large latencies.  
+   - You can apply advanced Wireshark filters (from the [Wireshark Cheat Sheet](https://www.wireshark.org/docs/dfref/) or your own custom ones) after converting or opening captures.
+
+---
+
+### Quick Reference Summary
+
+**PktMon Quick Start**  
+```
+pktmon start --capture --comp nics --flags 0x10 --file capture.etl
+pktmon stop
+pktmon pcapng capture.etl -o capture.pcapng   # Convert to Wireshark-friendly format
+pktmon format capture.etl -o capture.txt      # Optional text summary
+```
+
+**tcpdump Quick Start**  
+```
+tcpdump -i eth0 -w capture.pcap           # Start capturing on eth0
+# Ctrl + C to stop
+tcpdump -r capture.pcap                   # Read pcap in terminal
+tcpdump -i eth0 host 192.168.1.10 -w host.pcap  # Filter by host
+tcpdump -i eth0 'port 80 or port 443' -w web.pcap  # Filter by multiple ports
+```
+
+Use these commands and filters to quickly start and stop captures, convert (where needed), and apply basic or advanced filters for diagnosing slow network connections or host issues. Once you have the capture file, open it in Wireshark (or any compatible analyzer) to apply more granular display filters and visualize packet flows.
