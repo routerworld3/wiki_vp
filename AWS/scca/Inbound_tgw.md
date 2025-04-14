@@ -4,7 +4,7 @@ This is the **SCCA-compliant path for inbound DoD traffic to a public-facing wor
 
 ---
 
-## 🌐 Scenario Summary
+##  Scenario Summary
 
 | Component         | Details |
 |------------------|---------|
@@ -18,17 +18,17 @@ This is the **SCCA-compliant path for inbound DoD traffic to a public-facing wor
 
 ---
 
-## 🛰 Flow: Inbound From DXGW to EC2-B (with Inspection)
+##  Flow: Inbound From DXGW to EC2-B (with Inspection)
 
 **On-prem ➝ DXGW ➝ TGW ➝ Inspection VPC ➝ TGW ➝ Spoke VPC ➝ EC2-B**
 
 ---
 
-## 🛣 Step-by-Step Routing
+##  Step-by-Step Routing
 
 ---
 
-### 🔹 1. **DXGW → TGW (Ingress Association)**
+###  1. **DXGW → TGW (Ingress Association)**
 
 - DXGW receives traffic for `190.18.0.100`
 - DXGW is **associated with TGW**
