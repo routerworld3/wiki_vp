@@ -12,9 +12,9 @@ This **reusable GitHub Actions workflow** does the following:
 
 ---
 
-## ✅ BREAKDOWN BY COMPONENTS
+##  BREAKDOWN BY COMPONENTS
 
-### 🔷 `on: workflow_call`
+###  `on: workflow_call`
 
 This makes the workflow **reusable** (i.e., it can be invoked from other workflows).
 
@@ -30,7 +30,7 @@ This makes the workflow **reusable** (i.e., it can be invoked from other workflo
 
 ---
 
-### 🔷 Job: `pushRepoToS3`
+###  Job: `pushRepoToS3`
 
 Runs on `ubuntu-latest`, with minimal permissions:
 
@@ -42,7 +42,7 @@ permissions:
 
 ---
 
-### ✅ 1. **Set ENV Vars (Branch to AWS Account mapping)**
+###  1. **Set ENV Vars (Branch to AWS Account mapping)**
 
 This step dynamically sets `AWS_ACCOUNT_ID` based on branch (`main`, `test`, `dev`).
 
@@ -55,7 +55,7 @@ Key Takeaways:
 
 ---
 
-### ✅ 2. **GitHub App Authentication**
+###  2. **GitHub App Authentication**
 
 ```yaml
 uses: actions/create-github-app-token@v1
@@ -64,7 +64,7 @@ with:
   private-key: ${{ secrets.PRIV_KEY }}
 ```
 
-#### 🔹 What is this?
+####  What is this?
 
 - Authenticates as a **GitHub App**, not a personal access token.
 - This **creates a short-lived token** with specific repo/org-level access (e.g., to access private helper repos).
@@ -73,7 +73,7 @@ with:
 
 ---
 
-### ✅ 3. **Checkout Repos**
+###  3. **Checkout Repos**
 
 - Checks out **current repository** (using default token).
 - Checks out `nmmes-org-codebuild-helpers` repo using **GitHub App token** (created in the previous step).
@@ -82,7 +82,7 @@ Key Point: This allows centralized helper logic to be reused securely across mul
 
 ---
 
-### ✅ 4. **Configure BuildSpec Scripts**
+###  4. **Configure BuildSpec Scripts**
 
 Replaces the placeholder `terraform-TF_VERSION` in any file named `buildspec*` with the actual Terraform version (from input).
 
@@ -90,7 +90,7 @@ Replaces the placeholder `terraform-TF_VERSION` in any file named `buildspec*` w
 
 ---
 
-### ✅ 5. **Configure AWS Credentials (OIDC Integration)**
+###  5. **Configure AWS Credentials (OIDC Integration)**
 
 ```yaml
 uses: aws-actions/configure-aws-credentials@v4
@@ -99,14 +99,14 @@ with:
   role-session-name: "GithubS3Integration"
 ```
 
-#### 🔹 What’s happening here?
+####  What’s happening here?
 
 - Uses **GitHub OIDC** to authenticate to AWS *without using static credentials*.
 - Assumes the specified IAM role (`githubToS3-<REPO_NAME>`) using `sts:AssumeRoleWithWebIdentity`.
 
 > This role must be created in advance and trusted for OIDC federated login from GitHub.
 
-#### 🔹 CloudFormation
+####  CloudFormation
 
 You mentioned a CloudFormation stack that configures GitHub as an OIDC provider — that’s exactly what enables this step. The role's **trust policy** must allow:
 
@@ -124,7 +124,7 @@ You mentioned a CloudFormation stack that configures GitHub as an OIDC provider 
 
 ---
 
-### ✅ 6. **Cancel In-Progress CodePipeline Executions**
+###  6. **Cancel In-Progress CodePipeline Executions**
 
 This step:
 
@@ -135,7 +135,7 @@ This step:
 
 ---
 
-### ✅ 7. **Zip and Upload Repo to S3**
+###  7. **Zip and Upload Repo to S3**
 
 - Zips the entire repository.
 - Uploads it to an S3 bucket for CodePipeline to use as the source artifact.
@@ -145,7 +145,7 @@ This step:
 
 ---
 
-## ✅ What About the GitHub App vs OIDC?
+##  What About the GitHub App vs OIDC?
 
 Let’s clarify the difference:
 
@@ -156,14 +156,14 @@ Let’s clarify the difference:
 | Where it's used       | To fetch `nmmes-org-codebuild-helpers` repo | To assume AWS IAM role                        |
 | How it's used         | `actions/create-github-app-token`  | `aws-actions/configure-aws-credentials`       |
 
-> 🔑 They are **independent authentication flows** serving **different targets**:
+>  They are **independent authentication flows** serving **different targets**:
 >
 > - **GitHub App** → GitHub API
 > - **OIDC** → AWS STS
 
 ---
 
-## ✅ Summary Table
+##  Summary Table
 
 | Step                          | Purpose                                                      |
 |-------------------------------|--------------------------------------------------------------|
@@ -198,7 +198,7 @@ with:
 
 ---
 
-## 🔷 What is `actions/create-github-app-token@v1`?
+##  What is `actions/create-github-app-token@v1`?
 
 This is an **official GitHub Action** that:
 
@@ -210,7 +210,7 @@ This is an **official GitHub Action** that:
 
 ---
 
-## ✅ Why Use GitHub App Authentication?
+##  Why Use GitHub App Authentication?
 
 GitHub Apps are **secure, scoped integrations** — preferred over Personal Access Tokens (PATs) for CI/CD.
 
@@ -225,7 +225,7 @@ Use cases:
 
 ---
 
-## 🔷 Purpose-Based Comparison
+##  Purpose-Based Comparison
 
 | Purpose                                | **GitHub App (App ID & Private Key)**                                   | **OIDC Provider (IAM Role & GitHub Token)**                               |
 |----------------------------------------|-------------------------------------------------------------------------|---------------------------------------------------------------------------|
@@ -236,11 +236,11 @@ Use cases:
 
 ---
 
-## 🔷 GitHub App Authentication Flow (to GitHub API)
+##  GitHub App Authentication Flow (to GitHub API)
 
-> 🔐 Used for authenticating as a **GitHub App** to access private repos, perform GitHub API actions (issues, PRs, checkouts, etc.).
+>  Used for authenticating as a **GitHub App** to access private repos, perform GitHub API actions (issues, PRs, checkouts, etc.).
 
-### 🔁 Flow Summary
+###  Flow Summary
 
 ```plaintext
 [Workflow Step]
@@ -254,7 +254,7 @@ Use cases:
   └── Use Token to access private GitHub resources (e.g., checkout repo)
 ```
 
-### 🧱 Key Components
+###  Key Components
 
 | Element             | Description                                                  |
 |---------------------|--------------------------------------------------------------|
@@ -263,7 +263,7 @@ Use cases:
 | `JWT`               | Short-lived signed token for authenticating as the App       |
 | `Installation Token`| Token used to call GitHub APIs or checkout private repos     |
 
-### ✅ Use Cases
+###  Use Cases
 
 - Checkout a **private helper repo** (like shared build scripts)
 - Automate issue/PR comments, checks, GitHub metadata operations
@@ -271,11 +271,11 @@ Use cases:
 
 ---
 
-## 🔷 OIDC + IAM Role Flow (to AWS)
+##  OIDC + IAM Role Flow (to AWS)
 
-> 🔐 Used to authenticate **from GitHub Actions to AWS** securely without storing credentials.
+>  Used to authenticate **from GitHub Actions to AWS** securely without storing credentials.
 
-### 🔁 Flow Summary
+###  Flow Summary
 
 ```plaintext
 [GitHub Actions Workflow]
@@ -289,7 +289,7 @@ Use cases:
   └── Temporary AWS credentials returned to workflow
 ```
 
-### 🧱 Key Components
+###  Key Components
 
 | Element               | Description                                                                 |
 |-----------------------|-----------------------------------------------------------------------------|
@@ -298,7 +298,7 @@ Use cases:
 | `IAM Role`            | Trusted for web identity federation via condition: `repo:<org>/<repo>`      |
 | `STS`                 | Secure Token Service: exchanges OIDC token for temporary AWS credentials    |
 
-### ✅ Use Cases
+###  Use Cases
 
 - Deploy Terraform/CloudFormation to AWS
 - Upload artifacts to S3
@@ -307,9 +307,9 @@ Use cases:
 
 ---
 
-## 🧩 Visual Diagram Comparison
+##  Visual Diagram Comparison
 
-### 🔷 GitHub App Flow
+###  GitHub App Flow
 
 ```plaintext
 [GitHub Actions Workflow]
@@ -323,7 +323,7 @@ Use cases:
 
 ---
 
-### 🔷 OIDC to AWS IAM Role Flow
+###  OIDC to AWS IAM Role Flow
 
 ```plaintext
 [GitHub Actions Workflow]
@@ -338,7 +338,7 @@ Use cases:
 
 ---
 
-## 🧩 Side-by-Side Summary Table
+##  Side-by-Side Summary Table
 
 | Feature                              | GitHub App                             | OIDC Provider (AWS)                          |
 |--------------------------------------|----------------------------------------|----------------------------------------------|
@@ -347,12 +347,12 @@ Use cases:
 | **Expires After**                    | ~1 hour (installation token)           | ~15 minutes (AWS session token)               |
 | **Trust Model**                      | GitHub App permissions                 | IAM Role Trust Policy + OIDC sub/aud claims   |
 | **Authentication Needed**            | App ID + PEM Private Key               | Built-in OIDC identity from GitHub workflow   |
-| **GitHub Secret Required?**          | ✅ Yes (`APP_ID`, `PRIVATE_KEY`)        | ❌ No AWS keys required if using OIDC         |
+| **GitHub Secret Required?**          |   Yes (`APP_ID`, `PRIVATE_KEY`)        |  No AWS keys required if using OIDC         |
 | **Where It Works**                   | GitHub API / repo clone / metadata     | AWS API (S3, CodePipeline, etc.)              |
 
 ---
 
-## ✅ Final Recommendation
+##  Final Recommendation
 
 Use both **in combination** for secure and scalable GitHub → AWS pipelines:
 
@@ -367,28 +367,28 @@ Absolutely — let’s go **deep into the OIDC + IAM Role flow** used by GitHub 
 
 ---
 
-## ✅ OIDC + IAM Role Flow: Overview
+##  OIDC + IAM Role Flow: Overview
 
 > GitHub Actions runners authenticate to AWS using **short-lived OIDC tokens** issued by GitHub and **validated by AWS STS** (Security Token Service), which returns **temporary IAM credentials**.
 
 ---
 
-## 🔷 OIDC Authentication Flow Type
+##  OIDC Authentication Flow Type
 
 This flow uses:
 
-### ✅ **OIDC Web Identity Federation Flow**
+###  **OIDC Web Identity Federation Flow**
 
 | OIDC Flow Type                  | Used In                                       |
 |----------------------------------|-----------------------------------------------|
 | **Authorization Code Flow**     | User login via browser (OAuth2/OIDC apps)     |
 | **Client Credentials Flow**     | Machine-to-machine auth (OAuth2 only)         |
 | **Implicit Flow**               | (Legacy) Browser-only apps                    |
-| ✅ **Web Identity Federation**   | External workload identity to cloud platform (e.g., GitHub → AWS) |
+|  **Web Identity Federation**   | External workload identity to cloud platform (e.g., GitHub → AWS) |
 
 ---
 
-## 🔁 End-to-End Flow (GitHub → AWS)
+##  End-to-End Flow (GitHub → AWS)
 
 ```plaintext
 [GitHub Actions Runner]
@@ -403,8 +403,8 @@ This flow uses:
    │       → Passes: OIDC token + Role ARN
    │
    ├── 3. AWS validates:
-   │       ✅ OIDC provider trust (issuer match)
-   │       ✅ Claims (sub, aud) match trust policy
+   │        OIDC provider trust (issuer match)
+   │        Claims (sub, aud) match trust policy
    │
    ├── 4. AWS STS returns:
    │       - Temporary IAM credentials (Access Key, Secret, Token)
@@ -414,9 +414,9 @@ This flow uses:
 
 ---
 
-## 🧱 Component Breakdown
+##  Component Breakdown
 
-### 🔹 1. OIDC Token (JWT) from GitHub
+###  1. OIDC Token (JWT) from GitHub
 
 This JWT is **automatically generated** during the workflow if you set:
 
@@ -440,7 +440,7 @@ You can decode this JWT on jwt.io or with `jq`.
 
 ---
 
-### 🔹 2. AWS OIDC Provider Setup
+###  2. AWS OIDC Provider Setup
 
 You must **register GitHub’s OIDC provider** in AWS:
 
@@ -455,7 +455,7 @@ This is often deployed via CloudFormation/Terraform.
 
 ---
 
-### 🔹 3. IAM Role with Web Identity Trust
+###  3. IAM Role with Web Identity Trust
 
 IAM Role **trusts OIDC tokens** issued by GitHub, and includes **conditions** on `sub` and `aud`:
 
@@ -477,11 +477,11 @@ IAM Role **trusts OIDC tokens** issued by GitHub, and includes **conditions** on
 }
 ```
 
-🔐 This ensures only **specific GitHub repos and branches** can assume this role.
+ This ensures only **specific GitHub repos and branches** can assume this role.
 
 ---
 
-### 🔹 4. GitHub Workflow Assumes IAM Role
+###  4. GitHub Workflow Assumes IAM Role
 
 In the workflow YAML:
 
@@ -500,7 +500,7 @@ The action:
 
 ---
 
-### 🔹 5. AWS STS Returns Temporary Credentials
+###  5. AWS STS Returns Temporary Credentials
 
 If AWS validates the token and the trust policy conditions match, it returns:
 
@@ -521,11 +521,11 @@ These are injected into the GitHub Actions environment as:
 - `AWS_SECRET_ACCESS_KEY`
 - `AWS_SESSION_TOKEN`
 
-🔐 These credentials are **short-lived (~15 mins)** and scoped only to that IAM role.
+ These credentials are **short-lived (~15 mins)** and scoped only to that IAM role.
 
 ---
 
-## ✅ Security Advantages of OIDC
+##  Security Advantages of OIDC
 
 | Feature                      | Benefit                                           |
 |------------------------------|---------------------------------------------------|
@@ -536,7 +536,7 @@ These are injected into the GitHub Actions environment as:
 
 ---
 
-## ✅ Summary
+##  Summary
 
 | Element                        | Description                                                                 |
 |--------------------------------|-----------------------------------------------------------------------------|
@@ -563,7 +563,7 @@ This includes:
 
 ---
 
-## ✅ 1. OIDC Token (JWT) Packet Structure
+##  1. OIDC Token (JWT) Packet Structure
 
 GitHub issues a **JWT** (JSON Web Token), which is used as the **web identity token** when calling AWS STS.
 
@@ -573,7 +573,7 @@ eyJpc3MiOiJodHRwczovL3Rva2VuLmFjdGlvbnMuZ2l0aHViY29udGVudC5jb20iLCJzdWIiOiJyZXBv
 <signature>                                          ← Signed using GitHub's private key
 ```
 
-### 🔹 Example Decoded JWT Claims
+###  Example Decoded JWT Claims
 
 ```json
 {
@@ -591,11 +591,11 @@ eyJpc3MiOiJodHRwczovL3Rva2VuLmFjdGlvbnMuZ2l0aHViY29udGVudC5jb20iLCJzdWIiOiJyZXBv
 
 ---
 
-## ✅ 2. AWS STS Call (HTTP Packet View)
+##  2. AWS STS Call (HTTP Packet View)
 
 The GitHub workflow sends the token in a **POST request** to STS like this:
 
-### 🔹 HTTP Request (simplified)
+###  HTTP Request (simplified)
 
 ```http
 POST / HTTP/1.1
@@ -613,7 +613,7 @@ The `WebIdentityToken` is passed **inline** in the body (not as an HTTP header).
 
 ---
 
-## ✅ 3. AWS STS Response (What AWS Sends Back)
+##  3. AWS STS Response (What AWS Sends Back)
 
 If the token is valid and the IAM role trust policy conditions match:
 
@@ -640,7 +640,7 @@ These credentials are scoped to the IAM role assumed and expire after ~15 minute
 
 ---
 
-## 🧩 ASCII FLOW DIAGRAM: GitHub Actions OIDC to AWS IAM
+##  ASCII FLOW DIAGRAM: GitHub Actions OIDC to AWS IAM
 
 ```plaintext
 +--------------------+          +------------------------+         +------------------------+
@@ -674,7 +674,7 @@ These credentials are scoped to the IAM role assumed and expire after ~15 minute
 
 ---
 
-## 🔐 SECURITY KEY INSIGHTS
+##  SECURITY KEY INSIGHTS
 
 | Aspect                    | Insight                                                                 |
 |---------------------------|-------------------------------------------------------------------------|
@@ -688,7 +688,7 @@ These credentials are scoped to the IAM role assumed and expire after ~15 minute
 
 ---
 
-## 🔎 How You Can Observe This Live
+##  How You Can Observe This Live
 
 To inspect the token during a workflow run, you can dump it:
 
@@ -704,14 +704,14 @@ Then decode the token at [jwt.io](https://jwt.io).
 
 ---
 
-## ✅ Conclusion
+##  Conclusion
 
 GitHub → AWS via OIDC is a **secure, modern, machine-auth flow** built on:
 
-- 🔐 **JWT-based identity federation**
-- 🔄 **STS AssumeRoleWithWebIdentity**
-- 📦 **Temporary IAM credentials**
-- ✅ **Fine-grained repo-scoped trust**
+-  **JWT-based identity federation**
+-  **STS AssumeRoleWithWebIdentity**
+-  **Temporary IAM credentials**
+-  **Fine-grained repo-scoped trust**
 
 It’s the **recommended pattern** for CI/CD access to AWS today.
 
@@ -721,7 +721,7 @@ Great! Here's a **sample decoded GitHub OIDC token (JWT)** showing what claims y
 
 ---
 
-## 🔷 Sample GitHub OIDC JWT (Decoded)
+##  Sample GitHub OIDC JWT (Decoded)
 
 When GitHub Actions generates a JWT for OIDC authentication, it has three parts:
 
@@ -757,7 +757,7 @@ Here's a **decoded payload** (middle part of the JWT):
 
 ---
 
-## 🔷 Key Claims Explained
+##  Key Claims Explained
 
 | Claim                   | Description                                                                 |
 |--------------------------|-----------------------------------------------------------------------------|
@@ -777,7 +777,7 @@ Here's a **decoded payload** (middle part of the JWT):
 
 ---
 
-## 🔐 Security Notes
+##  Security Notes
 
 - The **`sub` claim is the one IAM uses for matching**, so your role trust policy should match it like:
 
@@ -795,7 +795,7 @@ Here's a **decoded payload** (middle part of the JWT):
 
 ---
 
-## 🛠️ How to Inspect in Your Workflow (Optional)
+## 🛠 How to Inspect in Your Workflow (Optional)
 
 You can add this debug step (for learning/testing):
 
@@ -813,13 +813,10 @@ Then paste the JWT at [https://jwt.io](https://jwt.io) and inspect the payload.
 
 ---
 
-Would you like a trust policy snippet built from this decoded token? Or want me to generate an IAM role in Terraform that matches it?
-
-Would you like a real-world Terraform + GitHub example to go with this flow (OIDC provider + IAM role + example workflow)? I can drop that next.
 
 ---
 
-## 🔷 Sample GitHub OIDC JWT (Decoded)
+##  Sample GitHub OIDC JWT (Decoded)
 
 When GitHub Actions generates a JWT for OIDC authentication, it has three parts:
 
@@ -875,7 +872,7 @@ Here's a **decoded payload** (middle part of the JWT):
 
 ---
 
-## 🔐 Security Notes
+##  Security Notes
 
 - The **`sub` claim is the one IAM uses for matching**, so your role trust policy should match it like:
 
@@ -893,7 +890,7 @@ Here's a **decoded payload** (middle part of the JWT):
 
 ---
 
-## 🛠️ How to Inspect in Your Workflow (Optional)
+##  How to Inspect in Your Workflow (Optional)
 
 You can add this debug step (for learning/testing):
 
@@ -915,7 +912,7 @@ Excellent question — this goes to the **heart of how AWS STS verifies an OIDC 
 
 ---
 
-## ✅ Overview: How AWS Verifies GitHub’s OIDC JWT
+##  Overview: How AWS Verifies GitHub’s OIDC JWT
 
 When GitHub sends a JWT to AWS STS using `AssumeRoleWithWebIdentity`, AWS validates it by:
 
@@ -927,9 +924,9 @@ When GitHub sends a JWT to AWS STS using `AssumeRoleWithWebIdentity`, AWS valida
 
 ---
 
-## 🔁 Step-by-Step: JWT Verification by AWS
+##  Step-by-Step: JWT Verification by AWS
 
-### 🔷 Step 1: GitHub Action Sends Token
+###  Step 1: GitHub Action Sends Token
 
 The GitHub Action (like `aws-actions/configure-aws-credentials`) sends this:
 
@@ -943,7 +940,7 @@ RoleArn=arn:aws:iam::123456789012:role/github-deploy-role
 
 ---
 
-### 🔷 Step 2: AWS Extracts and Parses the JWT
+###  Step 2: AWS Extracts and Parses the JWT
 
 - Splits the JWT into **header, payload, and signature**
 - Decodes the **header** to see which algorithm is used (`alg: RS256`)
@@ -961,12 +958,12 @@ Example:
 
 ---
 
-### 🔷 Step 3: AWS Looks Up the OIDC Provider in IAM
+###  Step 3: AWS Looks Up the OIDC Provider in IAM
 
 AWS checks:  
 > *“Do I trust this issuer (`https://token.actions.githubusercontent.com`) as a valid OIDC provider?”*
 
-✅ This depends on whether the OIDC provider was created in the AWS account:
+ This depends on whether the OIDC provider was created in the AWS account:
 
 ```bash
 aws iam create-open-id-connect-provider \
@@ -979,7 +976,7 @@ If the OIDC provider is not defined, **STS will reject the request immediately.*
 
 ---
 
-### 🔷 Step 4: AWS Validates the JWT Signature
+###  Step 4: AWS Validates the JWT Signature
 
 - The JWT is **signed by GitHub’s private key**.
 - AWS uses the **GitHub public key (via the OIDC provider’s JWKs endpoint)** to validate the signature.
@@ -994,11 +991,11 @@ https://token.actions.githubusercontent.com/.well-known/jwks
 
 These JWKs (public keys) are used by AWS to ensure the token wasn't tampered with.
 
-> 🔐 **No shared secrets** — it's public key cryptography (RS256).
+>  **No shared secrets** — it's public key cryptography (RS256).
 
 ---
 
-### 🔷 Step 5: AWS Verifies `aud` and `sub` Claims
+###  Step 5: AWS Verifies `aud` and `sub` Claims
 
 **Required:**
 
@@ -1047,7 +1044,7 @@ These are scoped to the permissions defined in the IAM role.
 
 ---
 
-## 🧩 ASCII Recap: Trust Verification Chain
+##  ASCII Recap: Trust Verification Chain
 
 ```plaintext
 [GitHub Actions Runner]
@@ -1067,7 +1064,7 @@ These are scoped to the permissions defined in the IAM role.
 
 ---
 
-## 🔐 Security Highlights
+##  Security Highlights
 
 | Security Mechanism          | How It Protects AWS IAM                                                 |
 |-----------------------------|---------------------------------------------------------------------------|
@@ -1080,9 +1077,4 @@ These are scoped to the permissions defined in the IAM role.
 
 ---
 
-Would you like to:
 
-- Simulate this end-to-end with `curl` and a GitHub-issued token?
-- Generate CloudFormation for the OIDC provider and IAM role with exact trust conditions?
-
-Let me know and I’ll walk you through it.
