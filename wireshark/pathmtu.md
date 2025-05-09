@@ -12,11 +12,11 @@ Application  ─►  Socket API  ─►  OS kernel (TCP/UDP)  ─►  NIC driver
 
 #### 2. How the kernel discovers the right MSS/MTU
 
-| Phase | Decision logic (TCP example) | Reference |
-|-------|------------------------------|-----------|
-| **SYN handshake** | Each side advertises its largest receive MSS (`TCP option 2`). Initial MSS chosen = `min(local MSS, peer MSS, interface MTU−40)`. | citeturn0search3 |
-| **After the first data burst** | *Path‑MTU Discovery* (PMTUD): kernel sends full‑size segments with DF=1. If an intermediate hop returns **ICMP Type 3 Code 4**, kernel lowers the path MTU and shrinks MSS. | citeturn0search3turn0search2 |
-| **If ICMP never comes back** | Linux/FreeBSD/Windows now use **Packetization‑Layer PMTUD (PLPMTUD, RFC 4821)**: they probe with larger payloads and back off on loss, avoiding dependence on ICMP. | citeturn0search2 |
+| Phase | Decision logic (TCP example) |
+|-------|------------------------------|
+| **SYN handshake** | Each side advertises its largest receive MSS (`TCP option 2`). Initial MSS chosen = `min(local MSS, peer MSS, interface MTU−40)`. 
+| **After the first data burst** | *Path‑MTU Discovery* (PMTUD): kernel sends full‑size segments with DF=1. If an intermediate hop returns **ICMP Type 3 Code 4**, kernel lowers the path MTU and shrinks MSS. 
+| **If ICMP never comes back** | Linux/FreeBSD/Windows now use **Packetization‑Layer PMTUD (PLPMTUD, RFC 4821)**: they probe with larger payloads and back off on loss, avoiding dependence on ICMP. 
 
 For UDP, the kernel simply hands the entire datagram to IP. If its size > interface MTU and DF=1, the send call fails with **EMSGSIZE**, giving the *application* a chance to chop the payload or clear DF.
 
