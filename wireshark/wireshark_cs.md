@@ -221,3 +221,28 @@ Use these commands and filters to quickly start and stop captures, convert (wher
 | **URG-ACK** | `0x30`    | `tcp.flags & 0x30 == 0x30` | Urgent and Acknowledge - Acknowledges received data and indicates the presence of urgent data. |
 
 This table provides a quick reference for filtering TCP packets based on their flags in Wireshark and understanding their typical roles in a TCP connection. Remember that the exact interpretation can sometimes depend on the specific context of the network communication.
+
+
+The TCP header has a dedicated 1-byte Flags field. The bits within this byte are assigned to specific flags as we've discussed:
+
+* Bit 0: FIN (0x01)
+* Bit 1: SYN (0x02)
+* Bit 2: RST (0x04)
+* Bit 3: PSH (0x08)
+* Bit 4: ACK (0x10)
+* Bit 5: URG (0x20)
+* Bit 6: ECE (0x40)
+* Bit 7: CWR (0x80)
+
+The Nonce Sum (NS) flag, if present, is part of the TCP options and not within this primary Flags byte.
+
+You would typically see:
+
+* **SYN (0x02)** at the beginning of a connection.
+* **SYN-ACK (0x12)** as the server's response.
+* **ACK (0x10)** for acknowledgements during data transfer and the final ACK of the handshake.
+* **PSH-ACK (0x18)** for pushing data with acknowledgement.
+* **FIN (0x01)** or **FIN-ACK (0x11)** for graceful connection closure.
+* **RST (0x04)** for abrupt termination.
+
+
