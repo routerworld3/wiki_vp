@@ -199,3 +199,25 @@ tcpdump -i eth0 'port 80 or port 443' -w web.pcap  # Filter by multiple ports
 ```
 
 Use these commands and filters to quickly start and stop captures, convert (where needed), and apply basic or advanced filters for diagnosing slow network connections or host issues. Once you have the capture file, open it in Wireshark (or any compatible analyzer) to apply more granular display filters and visualize packet flows.
+
+## Wireshark TCP Flags 
+, here's a table summarizing the common TCP flags, their bitwise hex values for Wireshark, and their typical meanings in the context of TCP communication:
+
+| Flag Name      | Hex Value | Wireshark Filter           | Typical Meaning                                                                 |
+|----------------|-----------|----------------------------|---------------------------------------------------------------------------------|
+| **FIN** | `0x01`    | `tcp.flags & 0x01 == 0x01` | Finish - Sender indicates it has no more data to send, initiating connection closure. |
+| **SYN** | `0x02`    | `tcp.flags & 0x02 == 0x02` | Synchronize - First packet in the TCP three-way handshake, initiating a connection. |
+| **RST** | `0x04`    | `tcp.flags & 0x04 == 0x04` | Reset - Abruptly terminates a TCP connection due to an error or unexpected state. |
+| **PSH** | `0x08`    | `tcp.flags & 0x08 == 0x08` | Push - Sender urges the receiver to deliver the data to the application immediately. |
+| **ACK** | `0x10`    | `tcp.flags & 0x10 == 0x10` | Acknowledgment - Acknowledges the receipt of data or the SYN/SYN-ACK during connection establishment. |
+| **URG** | `0x20`    | `tcp.flags & 0x20 == 0x20` | Urgent - Indicates that the Urgent Pointer field is significant and points to urgent data. |
+| **ECE** | `0x40`    | `tcp.flags & 0x40 == 0x40` | ECN-Echo - Indicates that the sender received a TCP segment with the Congestion Experienced (CE) flag set (used in Explicit Congestion Notification). |
+| **CWR** | `0x80`    | `tcp.flags & 0x80 == 0x80` | Congestion Window Reduced - Sent by the sender to indicate it has reduced its congestion window after receiving an ECE segment. |
+| **NS** | `0x100`   | `tcp.flags & 0x100 == 0x100`| Nonce Sum - Used to help protect against wrapping sequence numbers (less commonly filtered directly). |
+| **SYN-ACK** | `0x12`    | `tcp.flags & 0x12 == 0x12` | Synchronize and Acknowledge - Second packet in the TCP three-way handshake, acknowledging the SYN and indicating the server's initial sequence number. |
+| **FIN-ACK** | `0x11`    | `tcp.flags & 0x11 == 0x11` | Finish and Acknowledge - Acknowledges the FIN from the other side and indicates the sender's agreement to close. |
+| **RST-ACK** | `0x14`    | `tcp.flags & 0x14 == 0x14` | Reset and Acknowledge - A reset that also acknowledges previously received data (often in response to errors). |
+| **PSH-ACK** | `0x18`    | `tcp.flags & 0x18 == 0x18` | Push and Acknowledge - Indicates that the data should be pushed to the application and acknowledges received data. Common for data transfer. |
+| **URG-ACK** | `0x30`    | `tcp.flags & 0x30 == 0x30` | Urgent and Acknowledge - Acknowledges received data and indicates the presence of urgent data. |
+
+This table provides a quick reference for filtering TCP packets based on their flags in Wireshark and understanding their typical roles in a TCP connection. Remember that the exact interpretation can sometimes depend on the specific context of the network communication.
