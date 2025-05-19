@@ -165,3 +165,7 @@ AWS Firewall Domain-based filters rely on metadata available early in the TLS/HT
 * All **logging and alerting** is generated **only at the stateful layer**.
 
 ---
+### Resources 
+https://aws.amazon.com/blogs/opensource/scaling-threat-prevention-on-aws-with-suricata/
+
+https://aws.amazon.com/blogs/security/tls-inspection-configuration-for-encrypted-egress-traffic-and-aws-network-firewall/
