@@ -1,41 +1,77 @@
-# ─── In the member / workload account ─────────────────────────────
-resource "aws_iam_role" "cwl_org_subscription" {
-  name               = "CWLOrgSubscription"
-  description        = "Role CWL assumes when sending logs to central destination"
-  assume_role_policy = jsonencode({
-    Version   = "2012-10-17"
-    Statement = [{
-      Effect    = "Allow"
-      Principal = { Service = "logs.${var.region}.amazonaws.com" }   # GovCloud still uses amazonaws.com
-      Action    = "sts:AssumeRole"
-    }]
-  })
-}
+nonnnpi_endpoints
 
-# The permission doesn’t matter much—CWL only checks that **some**
-# policy is present.  The example from AWS docs uses PutLogEvents:
-resource "aws_iam_role_policy" "cwl_org_subscription" {
-  role   = aws_iam_role.cwl_org_subscription.id
-  name   = "AllowPutLogEvents"
-  policy = jsonencode({
-    Version   = "2012-10-17"
-    Statement = [{
-      Effect   = "Allow"
-      Action   = ["logs:PutLogEvents"]
-      Resource = "arn:aws-us-gov:logs:${var.region}:${data.aws_caller_identity.self.account_id}:log-group:*"
-    }]
-  })
-}
+aws_security_group.endpoints.id
 
-resource "aws_cloudwatch_log_account_policy" "send_to_central" {
-  provider     = aws.member                       # alias for member acct
-  policy_name  = "SendAllLogsToCentral"
-  policy_type  = "SUBSCRIPTION_FILTER_POLICY"
-  scope        = "ALL"
+aws_security_group.nonnnpi_endpoints.id
 
-  policy_document = jsonencode({
-    DestinationArn = "arn:aws-us-gov:logs:${var.region}:${var.central_account_id}:destination:central-org-logs",
-    RoleArn        = aws_iam_role.cwl_org_subscription.arn,   # ← **local** role
-    FilterPattern  = ""
-  })
-}
+
+##############################################################################
+MO is Mission Owner 
+VDMS sometimes reference as Shared Services 
+VDSS Central TGW have Two TGW one for NNPI and second for nonnnpi TGW This can be reference as Central TGW ( nnpi and nonnnpi) 
+VDMS TGW refrence as Shared Service TGW or Shared_SVC_TGW
+
+Theare are two kind of Mission Owner.
+
+- Small Mission owner with Direct VPC Peering with VDSS TGW 
+    MO can have nnpi and nonnnpi VPC & each VPC will peer with nnpi and nonnnpi VDSS TGW
+	
+- Big Mission Owner with TGW Which Peers with VDSS NNNPI and nonnnpi TGW 
+
+
+1 Small MO  VPC Direct Connection to TGW  
+
+Each MO VPC Will get 2 TGW Attachment 
+
+one for Central VDSS TGW nnpi or non nnpi Depending on MO VPC (nnnpi or non nnpi) 
+second to Shared Service TGW or Shared_SVC_TGW
+
+MO VPC Route Table :
+- Default Route ===>VDSS TGW(nnpi or nnpi depending on mission owner vpc) 
+- VDMS Shared Services CIDR Bloc  ====>Shared_SVC_TGW ( Static Routes ) 
+
+Any time New CIDR is added to VDMS or Shared Services  MO VPC Needs To be Updated.
+
+
+##################################################################################
+Shared Services TGW Route Table 
+Two TGW RT 
+
+MO RT
+-  MO VPC or TGW will associate to this RT Only
+-  Routes to VDMS Propagated
+
+VDMS RT 
+  - VDMS VPC is associated 
+  - All MO VPC Routes Propagated
+  - All MO TGW Static Routes [Static Routes Required]
+  
+###########################################################################################################
+2 Bigger MO TGW Peering to Shared Services TGW nnpi and nonnnpi , two peering for Mixed workload 
+
+Assumption is MO have Single TGW is shared b/w nnpi and nonnnpi VPC 
+
+MO VPC Route Table 
+- Route to MO TGW 
+
+MO TGW Route Tables 
+
+Any time New CIDR is added to VDMS or Shared Services  MO VPC Needs To be Updated.
+
+- MO NNPI RT 
+  - Associated with MO NNPI VPC 
+  - Static Route for Shared Services toward Shared_SVC_TGW 
+  - Static Default Route to NNNPI TGW in VDSS
+  - Dynmaic MO NNPI VPC Route Propagated
+  
+- - MO nonNNPI RT 
+  - Associated with MO nonNNPI VPC 
+  - Static Route for Shared Services toward Shared_SVC_TGW 
+  - Static Default Route to non NNNPI TGW in VDSS
+  - Dynmaic MO nonNNPI VPC Route Propagated
+  
+-  Retrun RT 
+  - Associated with VDSS and Shared Service TGW Peering 
+  - All Propogated Routes for the NNPI and Non NNPI VPC 
+  
+################################################################################################
