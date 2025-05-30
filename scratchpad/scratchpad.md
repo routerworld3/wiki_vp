@@ -26,3 +26,16 @@ resource "aws_iam_role_policy" "cwl_org_subscription" {
     }]
   })
 }
+
+resource "aws_cloudwatch_log_account_policy" "send_to_central" {
+  provider     = aws.member                       # alias for member acct
+  policy_name  = "SendAllLogsToCentral"
+  policy_type  = "SUBSCRIPTION_FILTER_POLICY"
+  scope        = "ALL"
+
+  policy_document = jsonencode({
+    DestinationArn = "arn:aws-us-gov:logs:${var.region}:${var.central_account_id}:destination:central-org-logs",
+    RoleArn        = aws_iam_role.cwl_org_subscription.arn,   # ← **local** role
+    FilterPattern  = ""
+  })
+}
