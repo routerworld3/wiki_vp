@@ -92,4 +92,12 @@ prefix = "AWSLogs/!{partitionKeyFromQuery:accountId}/!{partitionKeyFromQuery:reg
 * 🎯 Make log group names machine-parseable and consistent
 * 🧠 Test regex using jq locally or on [jqplay.org](https://jqplay.org)
 
-Let me know if you want a Terraform module to enforce this naming across services, or a script to refactor log groups.
+### Testing with jqplay.org
+Put the Json Input like 
+```json
+{
+  "logGroup": "/aws/lambda/my-function-name/metrics"
+}
+```
+Put the Query like following and capture the output.
+(.logGroup | capture("^/aws/[^/]+/[^/]+/(?<type>[^/]+)")?.type // "unknown")
