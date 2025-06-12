@@ -1,5 +1,6 @@
 Resources : 
 https://github.com/aws-samples/amazon-cloudwatch-log-centralizer
+
 https://aws.amazon.com/blogs/architecture/stream-amazon-cloudwatch-logs-to-a-centralized-account-for-audit-and-analysis/
 
  **Lambda Code To Trigger Cloudwatch Log Subscription Filter**
