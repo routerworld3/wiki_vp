@@ -1,9 +1,9 @@
 
 ---
 
-# ✅ Updated Design: Cross-Org Snapshot Copy Using KMS-B (Only KMS Policy Required)
+#  Cross-Org Snapshot Copy Using KMS-B (Only KMS Policy Required)
 
-## 🧠 **Objective**
+##  **Objective**
 
 * 📦 Copy **KMS-encrypted EBS snapshots** from **multiple Org-A accounts** to a **central DR Account-B**
 * 🔐 Use **KMS-B in Account-B** to re-encrypt snapshots for DR
@@ -12,7 +12,7 @@
 
 ---
 
-## 🧭 **Updated Architecture**
+## 🧭 **Architecture**
 
 ```text
 Org-A (Many Accounts)                    Org-B (DR Account-B)
@@ -87,7 +87,7 @@ aws ec2 copy-snapshot \
 
 ---
 
-## 🔁 Optional Re-encryption to KMS-C (Inside DR)
+## 🔁 Recommened Re-encryption to KMS-C (Inside DR) This will Transfer the Ownership to DR Account & Encryption Key Changed from Temporary KMS-B 
 
 After snapshot exists in Account-B, you may want to:
 
