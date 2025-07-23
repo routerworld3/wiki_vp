@@ -1,5 +1,4 @@
-
-ac4e2d54-b92c-4841-842d-15e4c2a249b5
+06:B2:59:27:C4:2A:72:16:31:C1:EF:D9:43:1E:64:8F:A6:2E:1E:39
 nonnnpi_endpoints
 
 aws_security_group.endpoints.id
