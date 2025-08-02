@@ -92,7 +92,7 @@ graph TD
 Packets forwarded from the Stateless Engine go through the Stateful Engine (Suricata-based):
 
 * **Flow Table Check**: Existing sessions use cached verdict (pass/drop/reject).
-* **New Flow Evaluation**: Rules evaluated by **Rule Order** (Strict AWS Recommended or Action).
+* **New Flow Evaluation**: Rules evaluated by **Rule Order** 
 
 #### Stateful Rule Types
 
@@ -121,8 +121,8 @@ Packets forwarded from the Stateless Engine go through the Stateful Engine (Suri
 | Layer     | Action Type                 | Logs Generated   |
 | --------- | --------------------------- | ---------------- |
 | Stateless | pass / drop                 |  None           |
-| Stateless | forward to stateful engine  |  Eligible depend on Stateful Action      |
-| Stateful  | pass                        |  Flow Only      |
+| Stateless | forward to stateful engine  |  Eligible depend on Stateful Action                    |
+| Stateful  | pass                        |  Flow Only by default , alert keyword add in alert      |
 | Stateful  | drop / reject / alert       |  Flow +  Alert |
 | Stateful  | domain deny                 |  Flow +  Alert |
 | Stateful  | default drop/alert (strict) |  Flow +  Alert |
