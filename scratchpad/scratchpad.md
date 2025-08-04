@@ -1,3 +1,7 @@
+
+DNS (Customer or SCCA)	Public URL 	IAP White list Or DoD Only 	Any Specific Retriction Like 	Cert ( Customer Provied or SCCA)	Forwarding  IP address or DNS	Forwarding Instance (NLB,ALB,EC2)	Break/Inpsect	Passthrough
+
+
 06:B2:59:27:C4:2A:72:16:31:C1:EF:D9:43:1E:64:8F:A6:2E:1E:39
 nonnnpi_endpoints
 
