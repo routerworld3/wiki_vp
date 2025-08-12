@@ -1,3 +1,16 @@
+# Drop TCP when PPv2 header says src=1.1.1.1
+drop tcp any any -> $HOME_NET any (
+  msg:"DROP PPv2 src=1.1.1.1 (IPv4/TCP)";
+  flow:to_server,established;
+  # PPv2 signature "\r\n\r\n\0\r\nQUIT\n" (12 bytes) + ver/cmd 0x21 + fam/proto 0x11
+  content:"|0D 0A 0D 0A 00 0D 0A 51 55 49 54 0A 21 11|"; offset:0; depth:14;
+  # Skip the 2-byte length field, then match the 4-byte src IPv4 address (1.1.1.1)
+  content:"|01 01 01 01|"; distance:2; within:4;
+  classtype:not-suspicious; sid:420011001; rev:1;
+)
+
+
+
 tcp[0:12] == 0d:0a:0d:0a:00:0d:0a:51:55:49:54:0a
 
 
