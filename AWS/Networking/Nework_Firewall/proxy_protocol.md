@@ -1,3 +1,38 @@
+
+0000  0d 0a 0d 0a 00 0d 0a 51 55 49 54 0a   # 12-byte PPv2 magic
+000c  21                                     # ver/cmd = 0x21 (v2, PROXY)
+000d  11                                     # fam/proto = 0x11 (IPv4 + TCP)
+000e  00 54                                  # length = 0x0054 = 84 bytes (addr + TLVs)
+0010  ac 1f 10 24                            # src IP   = 172.31.16.36
+0014  64 58 58 20                            # dst IP   = 100.88.88.32
+0018  c4 0c                                  # src port = 0xC40C = 50188
+001a  00 16                                  # dst port = 0x0016 = 22 (SSH)
+
+# TLVs (84 - 12 addr = 72 bytes of TLVs follow)
+
+001c  03 00 04 99 86 dd a1                   # TLV: type=0x03 (CRC32C), len=4, value=99 86 DD A1
+
+0023  ea 00 17 01                            # TLV: type=0xEA (AWS), len=0x0017 (23)
+0027  76 70 63 65 2d 30 35 38 31 37 64 61    #  'vpce-05817da'
+0033  63 63 65 33 34 31 39 65 30 63          #  'cce3419e0c'  (22-byte value)
+                                             #  subtype=0x01 + "vpce-05817dacce3419e0c"
+
+003d  04 00 24                               # TLV: type=0x04, len=0x0024 (36)
+0040  00 ... (36 zero bytes) ... 00          # TLV value (all zeros)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 tcp contains 0d:0a:0d:0a:00:0d:0a:51:55:49:54:0a
 tcp contains 0d:0a:0d:0a:00:0d:0a:51:55:49:54:0a  && tcp matches "(?s)\x21\x11"
 
