@@ -1,10 +1,13 @@
 
+Nice—this one **does** carry the client IP. Here’s a full decode of your Proxy Protocol v2 header:
+
+```
 0000  0d 0a 0d 0a 00 0d 0a 51 55 49 54 0a   # 12-byte PPv2 magic
 000c  21                                     # ver/cmd = 0x21 (v2, PROXY)
 000d  11                                     # fam/proto = 0x11 (IPv4 + TCP)
 000e  00 54                                  # length = 0x0054 = 84 bytes (addr + TLVs)
 0010  ac 1f 10 24                            # src IP   = 172.31.16.36
-0014  64 58 58 20                            # dst IP   = 100.88.88.32
+0014  64 58 58 28                            # dst IP   = 100.88.88.40
 0018  c4 0c                                  # src port = 0xC40C = 50188
 001a  00 16                                  # dst port = 0x0016 = 22 (SSH)
 
@@ -19,18 +22,29 @@
 
 003d  04 00 24                               # TLV: type=0x04, len=0x0024 (36)
 0040  00 ... (36 zero bytes) ... 00          # TLV value (all zeros)
+```
 
+### What this tells you
 
+* **This is a PROXY header** (`0x21`), so it *does* include the original 4-tuple.
+* **Client (original) → Server:** `172.31.16.36:50188 → 100.88.88.40:22`
+* **CRC32C TLV** (`0x03`) is present and validates the header.
+* **AWS TLV** (`0xEA`, subtype `0x01`) carries the **VPC Endpoint ID**:
+  `vpce-05817dacce3419e0c`
+* There’s an additional **TLV type `0x04`** of 36 bytes filled with zeros. (Type `0x04` is a standard PPv2 TLV code; in your sample its value is empty/zeroed—often a placeholder or unused field depending on the producer.)
 
+### Quick Wireshark checks
 
+* Filter all PPv2 packets:
+  `tcp[0:12] == 0d:0a:0d:0a:00:0d:0a:51:55:49:54:0a`
+* Ensure it’s **PROXY+IPv4/TCP**:
+  `tcp[12] == 0x21 && tcp[13] == 0x11`
+* Confirm the **embedded client IP** in the header matches what you expect:
 
-
-
-
-
-
-
-
+  * Src IP bytes at payload offsets **0x10–0x13**
+  * Dst IP **0x14–0x17**
+  * Src port **0x18–0x19** (big-endian)
+  * Dst port **0x1A–0x1B**
 
 
 tcp contains 0d:0a:0d:0a:00:0d:0a:51:55:49:54:0a
