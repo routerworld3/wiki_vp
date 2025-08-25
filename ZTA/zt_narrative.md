@@ -36,4 +36,4 @@ Here, IP is not the *sole* gatekeeper — but it still helps reduce the attack s
 
 ---
 
-If you want, I can diagram how IP fits into a **Zero Trust decision flow** so it’s clear it’s an attribute, not a perimeter wall. That visual usually makes it click for stakeholders.
+
