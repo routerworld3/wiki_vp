@@ -1,4 +1,6 @@
--0cbecf4667f27001f
+-0cbecf4667f27001f'
+
+https://excalidraw.com/#json=8svw719UQOMRafy5ORn8k,7vKeEUx8wZqN-CYo0rDYFw
 
 # Drop TCP when PPv2 header says src=1.1.1.1
 drop tcp any any -> $HOME_NET any (
