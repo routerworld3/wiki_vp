@@ -1,4 +1,3 @@
-Certainly! Here's a **chronological overview of major Hindu scriptures** and philosophical developments — from the earliest **Vedas** to the later **Puranas and epics** — based on scholarly consensus and traditional accounts. The dates are **approximate**, as most texts were transmitted orally for centuries before being written down.
 
 ---
 
