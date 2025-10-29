@@ -1,0 +1,376 @@
+#############################################
+# Variables (inputs you tune per environment)
+#############################################
+
+variable "waf_name" {
+  description = "Name of the WAFv2 Web ACL"
+  type        = string
+  default     = "pb-waf"
+}
+
+variable "scope" {
+  # REGIONAL → ALB / API Gateway / AppSync
+  # CLOUDFRONT → Global scope for CloudFront distributions
+  description = "WAF scope: REGIONAL for ALB/APIGW; CLOUDFRONT for CloudFront"
+  type        = string
+  default     = "REGIONAL"
+}
+
+variable "alb_health_user_agent_substring" {
+  # ALB/NLB health checks include this in the User-Agent.
+  # Matching it lets probes bypass all other rules.
+  description = "Substring used by ALB/NLB health checker in User-Agent"
+  type        = string
+  default     = "ELB-HealthChecker"
+}
+
+variable "readiness_regex" {
+  # A single anchored regex that covers common K8s/Istio health endpoints.
+  description = "Regex (anchored) for readiness paths"
+  type        = string
+  default     = "^/(health|healthz|ready|live)$"
+}
+
+variable "enable_rate_limit" {
+  # Enables a global per-IP rate limit (requests/5 minutes).
+  # Note: readiness endpoints are excluded.
+  description = "Enable a global rate-based rule (excludes readiness paths)"
+  type        = bool
+  default     = false
+}
+
+variable "rate_limit_requests_per_5min" {
+  description = "Requests per 5 minutes per IP for rate-based rule"
+  type        = number
+  default     = 2000
+}
+
+variable "cloudwatch_log_group_name" {
+  description = "CW Log Group for WAF logs"
+  type        = string
+  default     = "/aws/wafv2/default-acl"
+}
+
+variable "associated_resource_arns" {
+  # ALB/API GW/CloudFront distribution ARNs to protect with this ACL
+  description = "List of resource ARNs (e.g., ALB) to associate the Web ACL with"
+  type        = list(string)
+  default     = []
+}
+
+variable "tags" {
+  description = "Common tags to apply"
+  type        = map(string)
+  default = {
+    Project = "WAF"
+  }
+}
+
+############
+# Locals
+############
+
+locals {
+  # WAF requires lowercased header name when using single_header
+  ua_header_name = "user-agent"
+}
+
+#############################################
+# Logging destination (CloudWatch Log Group)
+#############################################
+
+resource "aws_cloudwatch_log_group" "pb_waf" {
+  name              = "aws-waf-logs-pb-waf"
+  retention_in_days = 30
+  tags              = var.tags
+}
+
+######################################################
+# Regex Pattern Set for readiness/health endpoints
+######################################################
+
+resource "aws_wafv2_regex_pattern_set" "readiness_paths" {
+  name        = "${var.waf_name}-readiness-paths"
+  description = "Paths for K8s/Istio readiness/health checks"
+  scope       = var.scope
+
+  # Keep this single regex flexible—add additional endpoints if needed
+  regular_expression {
+    regex_string = var.readiness_regex
+  }
+
+  tags = var.tags
+}
+
+##########################################
+# Main Web ACL (ordered set of rules)
+##########################################
+
+resource "aws_wafv2_web_acl" "this" {
+  name        = var.waf_name
+  description = "Baseline ACL with K8s/Istio readiness + ALB health-check bypass and minimal managed rules"
+  scope       = var.scope
+
+  # Start with allow-by-default. Managed rules add protection above.
+  default_action {
+    allow {}
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = "${var.waf_name}-overall"
+    sampled_requests_enabled   = true
+  }
+
+  ###########################################################
+  # (10) Allow ALB/NLB health checks based on User-Agent
+  ###########################################################
+  rule {
+    name     = "AllowALBHealthChecks"
+    priority = 10
+
+    action {
+      allow {}
+    }
+
+    statement {
+      byte_match_statement {
+        field_to_match {
+          # Match the User-Agent header (must be lowercase name)
+          single_header { name = local.ua_header_name }
+        }
+        positional_constraint = "CONTAINS"
+        search_string         = var.alb_health_user_agent_substring
+        text_transformation {
+          priority = 0
+          type     = "NONE"
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.waf_name}-AllowALBHealthChecksPorts4443"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  ###########################################################
+  # (20) Allow readiness/health endpoints (regex on uri_path)
+  ###########################################################
+  rule {
+    name     = "AllowReadinessPaths"
+    priority = 20
+
+    action {
+      allow {}
+    }
+
+    statement {
+      regex_pattern_set_reference_statement {
+        arn = aws_wafv2_regex_pattern_set.readiness_paths.arn
+        field_to_match {
+          uri_path {}
+        }
+        text_transformation {
+          priority = 0
+          type     = "NONE"
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.waf_name}-AllowReadinessPaths"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  ####################################################################
+  # (30) Optional per-IP Global Rate Limit (EXCLUDING readiness paths)
+  ####################################################################
+  dynamic "rule" {
+    for_each = var.enable_rate_limit ? [1] : []
+    content {
+      name     = "GlobalRateLimit"
+      priority = 30
+
+      action {
+        block {}
+      } # Block when the rate is exceeded
+
+      statement {
+        rate_based_statement {
+          # WAF counts requests in a 5-minute window
+          limit              = var.rate_limit_requests_per_5min
+          aggregate_key_type = "IP"
+
+          # Exclude readiness endpoints from the rate counter
+          scope_down_statement {
+            not_statement {
+              statement {
+                regex_pattern_set_reference_statement {
+                  arn = aws_wafv2_regex_pattern_set.readiness_paths.arn
+                  field_to_match {
+                    uri_path {}
+                  }
+                  text_transformation {
+                    priority = 0
+                    type     = "NONE"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = "${var.waf_name}-GlobalRateLimit"
+        sampled_requests_enabled   = true
+      }
+    }
+  }
+
+  ###############################################
+  # (40+) Minimal AWS Managed Rule Groups
+  ###############################################
+
+  # (40) CommonRuleSet (CRS) in count mode for tuning
+  rule {
+    name     = "AWS-AWSManagedRulesCommonRuleSet"
+    priority = 40
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesCommonRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    # Count-only (observe first, then enforce later)
+    override_action {
+      count {}
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.waf_name}-CRS"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  # (50) Known Bad Inputs – enforce
+  rule {
+    name     = "AWS-AWSManagedRulesKnownBadInputsRuleSet"
+    priority = 50
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesKnownBadInputsRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    override_action {
+      none {}
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.waf_name}-KnownBadInputs"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  # (60) SQLi – enforce
+  rule {
+    name     = "AWS-AWSManagedRulesSQLiRuleSet"
+    priority = 60
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesSQLiRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    override_action {
+      none {}
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.waf_name}-SQLi"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  # (70) Linux – enforce (containers are Linux)
+  rule {
+    name     = "AWS-AWSManagedRulesLinuxRuleSet"
+    priority = 70
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesLinuxRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    override_action {
+      none {}
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.waf_name}-Linux"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  # (80) Amazon IP Reputation – enforce
+  rule {
+    name     = "AWS-AmazonIpReputationList"
+    priority = 80
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesAmazonIpReputationList"
+        vendor_name = "AWS"
+      }
+    }
+
+    override_action {
+      none {}
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.waf_name}-AmazonIpRep"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  tags = var.tags
+}
+
+##########################################################
+# Enable logging of Web ACL evaluations to CloudWatch Logs
+##########################################################
+
+resource "aws_wafv2_web_acl_logging_configuration" "this" {
+  resource_arn            = aws_wafv2_web_acl.this.arn
+  log_destination_configs = [aws_cloudwatch_log_group.pb_waf.arn]
+}
+
+#############################################
+# Associate the ACL to target resources (ALBs)
+#############################################
+
+resource "aws_wafv2_web_acl_association" "assoc" {
+  for_each     = toset(var.associated_resource_arns)
+  resource_arn = each.value
+  web_acl_arn  = aws_wafv2_web_acl.this.arn
+}
