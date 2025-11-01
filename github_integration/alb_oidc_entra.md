@@ -431,6 +431,31 @@ ALB enforces the standard OIDC claim checks (the exact set is per OIDC spec and 
 
 In short: ALB does a full **OIDC-compliant verification**—discovery → JWKS lookup → signature check → issuer/audience/time/nonce checks—then sets its own session cookie and forwards identity to your app.
 
+Exactly. Here’s the precise model:
+
+* **Signature:** The **ID token is a JWT (JWS)** that Microsoft Entra **signs with its private key** (tenant’s OIDC signing key). By default this is **RS256** (RSA + SHA-256).
+
+* **Public keys (JWKS):** The matching **public keys are published** at the tenant’s **OIDC discovery → JWKS URI**. For a tenant:
+
+  * Discovery:
+    `https://login.microsoftonline.com/<TENANT_ID>/v2.0/.well-known/openid-configuration`
+  * From there, **`jwks_uri`** points to a JSON Web Key Set containing one or more keys.
+
+* **Key selection (`kid`):** Each JWT header has a **`kid`** (key ID). ALB:
+
+  1. Parses the ID token header, reads `kid`.
+  2. Fetches/caches the **JWKS** from `jwks_uri`.
+  3. Picks the public key whose `kid` matches.
+  4. **Verifies the signature** using that public key and the declared `alg` (usually RS256).
+
+* **Other validations:** After the signature is good, ALB checks **`iss`** (must equal your configured issuer), **`aud`** (= your ALB client_id), **`exp/nbf/iat`** times, and **`nonce`**.
+
+* **Key rollover:** Entra periodically **rotates signing keys**. During rollover, JWKS may contain multiple keys; ALB simply matches `kid`. If a new `kid` appears, ALB refetches JWKS and continues validating seamlessly.
+
+* **Not encrypted:** The ID token is **signed, not encrypted**. Its claims are readable by ALB; integrity is guaranteed by the signature. (ALB does **not** support encrypted ID tokens.)
+
+So yes—Entra signs with its private key, and **advertises the corresponding public keys** via the **well-known OIDC metadata → `jwks_uri`**, which ALB uses to validate the token.
+
 ---
 
 ### TL;DR
