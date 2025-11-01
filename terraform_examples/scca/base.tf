@@ -51,3 +51,8 @@ module "nnpi_inspection" {
   naval_nuclear_propulsion_information = true
   firewall_policy_arn                  = aws_networkfirewall_firewall_policy.bluewater_baseline.arn
 }
+
+variable "network_config" {
+  description = "A map of VPCs and their associated CIDRs and subnets."
+  type        = any
+}
