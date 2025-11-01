@@ -1,0 +1,208 @@
+{
+  "cui": {
+    "inspection": {
+      "cidr": "100.64.0.0/22",
+      "fw_subnets": {
+        "fw-primary": {
+          "cidr": "100.64.0.0/25",
+          "availability_zone": "us-gov-west-1a"
+        },
+        "fw-secondary": {
+          "cidr": "100.64.0.128/25",
+          "availability_zone": "us-gov-west-1b"
+        }
+      },
+      "tgw_subnets": {
+        "tgw-primary": {
+          "cidr": "100.64.3.224/28",
+          "availability_zone": "us-gov-west-1a"
+        },
+        "tgw-secondary": {
+          "cidr": "100.64.3.240/28",
+          "availability_zone": "us-gov-west-1b"
+        }
+      }
+    },
+    "ingress_niprnet": {
+      "cidr": "172.30.0.0/22",
+      "secondary_cidr": "100.100.48.0/24",
+      "bcap_attach_subnets": {
+        "bcap-attach-primary": {
+          "cidr": "172.30.0.0/28",
+          "availability_zone": "us-gov-west-1a"
+        },
+        "bcap-attach-secondary": {
+          "cidr": "172.30.0.16/28",
+          "availability_zone": "us-gov-west-1b"
+        }
+      },
+      "public_subnets": {
+        "public-primary": {
+          "cidr": "100.100.48.0/25",
+          "availability_zone": "us-gov-west-1a"
+        },
+        "public-secondary": {
+          "cidr": "100.100.48.128/25",
+          "availability_zone": "us-gov-west-1b"
+        }
+      },
+      "private_subnets": {
+        "private-primary": {
+          "cidr": "172.30.2.0/24",
+          "availability_zone": "us-gov-west-1a"
+        },
+        "private-secondary": {
+          "cidr": "172.30.3.0/24",
+          "availability_zone": "us-gov-west-1b"
+        }
+      },
+      "inspection_attach_subnets": {
+        "inspection-attach-primary": {
+          "cidr": "172.30.0.224/28",
+          "availability_zone": "us-gov-west-1a"
+        },
+        "inspection-attach-secondary": {
+          "cidr": "172.30.0.240/28",
+          "availability_zone": "us-gov-west-1b"
+        }
+      }
+    },
+    "egress_niprnet": {
+      "cidr": "172.16.2.0/24",
+      "secondary_cidr": "100.100.62.0/27",
+      "bcap_attach_subnets": {
+        "bcap-attach-primary": {
+          "cidr": "172.16.2.0/28",
+          "availability_zone": "us-gov-west-1a"
+        },
+        "bcap-attach-secondary": {
+          "cidr": "172.16.2.16/28",
+          "availability_zone": "us-gov-west-1b"
+        }
+      },
+      "public_subnets": {
+        "public-primary": {
+          "cidr": "100.100.62.0/28",
+          "availability_zone": "us-gov-west-1a"
+        },
+        "public-secondary": {
+          "cidr": "100.100.62.16/28",
+          "availability_zone": "us-gov-west-1b"
+        }
+      },
+      "inspection_attach_subnets": {
+        "inspection-attach-primary": {
+          "cidr": "172.16.2.32/28",
+          "availability_zone": "us-gov-west-1a"
+        },
+        "inspection-attach-secondary": {
+          "cidr": "172.16.2.48/28",
+          "availability_zone": "us-gov-west-1b"
+        }
+      }
+    }
+  },
+  "pi": {
+    "inspection": {
+      "cidr": "100.64.4.0/22",
+      "fw_subnets": {
+        "fw-primary": {
+          "cidr": "100.64.4.0/25",
+          "availability_zone": "us-gov-west-1a"
+        },
+        "fw-secondary": {
+          "cidr": "100.64.4.128/25",
+          "availability_zone": "us-gov-west-1b"
+        }
+      },
+      "tgw_subnets": {
+        "tgw-primary": {
+          "cidr": "100.64.7.224/28",
+          "availability_zone": "us-gov-west-1a"
+        },
+        "tgw-secondary": {
+          "cidr": "100.64.7.240/28",
+          "availability_zone": "us-gov-west-1b"
+        }
+      }
+    },
+    "ingress_niprnet": {
+      "cidr": "172.30.4.0/22",
+      "secondary_cidr": "100.100.32.0/24",
+      "bcap_attach_subnets": {
+        "bcap-attach-primary": {
+          "cidr": "172.30.4.0/28",
+          "availability_zone": "us-gov-west-1a"
+        },
+        "bcap-attach-secondary": {
+          "cidr": "172.30.4.16/28",
+          "availability_zone": "us-gov-west-1b"
+        }
+      },
+      "public_subnets": {
+        "public-primary": {
+          "cidr": "100.100.32.0/25",
+          "availability_zone": "us-gov-west-1a"
+        },
+        "public-secondary": {
+          "cidr": "100.100.32.128/25",
+          "availability_zone": "us-gov-west-1b"
+        }
+      },
+      "private_subnets": {
+        "private-primary": {
+          "cidr": "172.30.6.0/24",
+          "availability_zone": "us-gov-west-1a"
+        },
+        "private-secondary": {
+          "cidr": "172.30.7.0/24",
+          "availability_zone": "us-gov-west-1b"
+        }
+      },
+      "inspection_attach_subnets": {
+        "inspection-attach-primary": {
+          "cidr": "172.30.4.224/28",
+          "availability_zone": "us-gov-west-1a"
+        },
+        "inspection-attach-secondary": {
+          "cidr": "172.30.4.240/28",
+          "availability_zone": "us-gov-west-1b"
+        }
+      }
+    },
+    "egress_niprnet": {
+      "cidr": "172.16.14.0/24",
+      "secondary_cidr": "100.100.47.0/27",
+      "bcap_attach_subnets": {
+        "bcap-attach-primary": {
+          "cidr": "172.16.14.0/28",
+          "availability_zone": "us-gov-west-1a"
+        },
+        "bcap-attach-secondary": {
+          "cidr": "172.16.14.16/28",
+          "availability_zone": "us-gov-west-1b"
+        }
+      },
+      "public_subnets": {
+        "public-primary": {
+          "cidr": "100.100.47.0/28",
+          "availability_zone": "us-gov-west-1a"
+        },
+        "public-secondary": {
+          "cidr": "100.100.47.16/28",
+          "availability_zone": "us-gov-west-1b"
+        }
+      },
+      "inspection_attach_subnets": {
+        "inspection-attach-primary": {
+          "cidr": "172.16.14.32/28",
+          "availability_zone": "us-gov-west-1a"
+        },
+        "inspection-attach-secondary": {
+          "cidr": "172.16.14.48/28",
+          "availability_zone": "us-gov-west-1b"
+        }
+      }
+    }   
+  }
+}
