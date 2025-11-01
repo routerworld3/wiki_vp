@@ -331,6 +331,105 @@ sequenceDiagram
 * For subsequent requests, ALB checks the session cookie.
 * As long as it’s valid, traffic goes straight to App-A without forcing another OIDC redirect.
 
+Great question. Here’s what the ALB actually does between receiving the code and letting traffic through—i.e., the **ID token validation pipeline**.
+
+# How ALB validates the OIDC ID token
+
+## 1) Parse the JWT
+
+* ALB receives the `id_token` from Entra’s `/token` response.
+* It splits the JWT into **header.payload.signature** and Base64-decodes the header & payload.
+* From the **header**, ALB reads:
+
+  * `alg` (the signing algorithm; Entra typically advertises RS256)
+  * `kid` (key identifier used to pick the right public key)
+
+## 2) Discover provider metadata (once/cached)
+
+* Using your configured **issuer**, ALB fetches (and caches) the OIDC metadata:
+
+  * `/.well-known/openid-configuration` → contains the **`jwks_uri`** and other endpoints.
+* ALB then fetches (and caches) the **JWKS** (JSON Web Key Set) from `jwks_uri`.
+
+  * If the `kid` in the token header isn’t in the cached JWKS, ALB will refetch/refresh.
+  * Key rotation on the IdP side is handled automatically via this JWKS lookup.
+
+## 3) Verify the signature (cryptographic check)
+
+* ALB selects the public key from JWKS whose `kid` matches the token’s header.
+* It verifies the JWT **signature** with that key and the advertised `alg`.
+
+  * If the signature check fails → validation stops (auth fails).
+
+## 4) Validate critical claims (semantic checks)
+
+ALB enforces the standard OIDC claim checks (the exact set is per OIDC spec and ALB implementation):
+
+* **`iss` (issuer)** must equal the configured issuer
+  e.g., `https://login.microsoftonline.com/<TenantID>/v2.0`
+* **`aud` (audience)** must equal your **client_id** (the App Registration’s Application (client) ID used by ALB)
+* **`exp` (expiry)** must be in the future (token not expired)
+* **`nbf` (not before)** must be in the past (token already valid)
+* **`iat` (issued at)** should be sane (fresh enough)
+* **`nonce`** must match what ALB originally sent in the `/authorize` request
+  (Mitigates replay and mix-up attacks; ALB generated the nonce and stored it for this check.)
+* **`sub`** (subject) must be present (OIDC requirement)
+
+> Note: ALB allows small clock skew; you don’t need to tune it.
+
+## 5) Optional user info (not required)
+
+* If you configured `user_info_endpoint`, ALB can call it to fetch profile data.
+* **Not required** for token validation; the **ID token alone** is sufficient for ALB to authenticate the session.
+
+## 6) Establish the ALB session
+
+* On success, ALB issues a **secure, HTTP-only session cookie** (name is whatever you set in `session_cookie_name` in the listener rule).
+* That cookie is what ALB uses to **skip re-auth** on subsequent requests until it expires.
+
+## 7) Forward to the target with identity headers
+
+* ALB forwards the original request to your target group and **adds headers**, e.g.:
+
+  * `x-amzn-oidc-identity` (a stable user identifier such as `sub`/UPN/email depending on your token config)
+  * `x-amzn-oidc-data` (base64 form of the ID token)
+  * (optional) `x-amzn-oidc-accesstoken` if scopes/flow yielded one and you want it passed
+
+# What happens on failures (and how they look)
+
+* **Signature or JWKS issues**
+
+  * Example causes: unknown `kid`, stale JWKS, wrong `iss` URL.
+  * **User experience:** 500 at `/oauth2/idpresponse`.
+  * **ALB access logs:** `elb_status_code=500`, `target_status_code=-`, `error_reason` like `OIDCJWKSFetchError` or `OIDCInvalidIssuer`.
+
+* **Audience/issuer mismatch**
+
+  * `aud` ≠ your ALB’s `client_id`, or `iss` doesn’t match configured issuer.
+  * **Result:** 500 at callback; logs show `OIDCInvalidIssuer` or a validation error.
+
+* **Expired/not-yet-valid token**
+
+  * `exp` in past or `nbf` in future (clock skew aside).
+  * **Result:** 500; token invalid.
+
+* **Nonce/state mismatch**
+
+  * Multiple tabs, long pauses, or replayed requests.
+  * **Result:** 500; logs often show `OIDCNonceMismatch` (or generic validation error).
+
+* **Client secret problems (during code exchange)**
+
+  * Expired/wrong secret: Entra rejects `/token` call.
+  * **Result:** 500; `error_reason=OIDCInvalidClientSecret` or `OIDCTokenEndpointError`.
+
+# Practical tips
+
+* **You don’t configure the callback path**: ALB always uses `…/oauth2/idpresponse`, constructed from the incoming request scheme/host. Make sure each domain/port you serve is registered in Entra with that exact redirect URI.
+* **Rely on ALB access logs**: When validation fails *before* your app, `target_status_code` will be `-` and `error_reason` is gold for diagnosis.
+* **Keep Entra App Registration tidy**: Use tenant-specific v2.0 endpoints; ensure the correct **Application (client) ID** and a **valid client secret**.
+
+In short: ALB does a full **OIDC-compliant verification**—discovery → JWKS lookup → signature check → issuer/audience/time/nonce checks—then sets its own session cookie and forwards identity to your app.
 
 ---
 
