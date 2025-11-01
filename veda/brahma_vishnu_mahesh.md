@@ -146,5 +146,3 @@ This story echoes profound metaphysical and even scientific themes:
 
 
 ---
-
-Would you like a **visual of the Jyotirlinga myth**, or a **comparison table of Hindu cosmological roles (Brahma, Vishnu, Shiva)** and their symbolic meanings?
