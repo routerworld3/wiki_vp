@@ -69,4 +69,4 @@
 
 ---
 
-Would you like this in a **PDF chart or infographic**, or a **comparison table with Jain and Buddhist timelines as well**?
+
