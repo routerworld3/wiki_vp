@@ -7,8 +7,8 @@ These are two separate but related mechanisms. Let me break them down clearly.
 ## The Core Idea First
 
 TCP has to solve two problems:
-- **Don't overwhelm the receiver** → Receive Window
-- **Don't overwhelm the network** → Congestion Control (via Congestion Window)
+- **Don't overwhelm the receiver/aka Flow Control** → Receive Window
+- **Don't overwhelm the network/aka Congestion Control** → Congestion Control (via Congestion Window)
 
 How much data TCP can actually send at once is controlled by whichever of these is the *smaller* limit.
 
