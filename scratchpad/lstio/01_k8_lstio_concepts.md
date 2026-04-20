@@ -188,4 +188,4 @@ flowchart LR
 * **Standard K8s** is like a house with a front door for every room.
 * **Istio** is like a hotel with one lobby (Gateway) and a concierge (VirtualService) who tells you which room to go to.
 
-How comfortable do you feel with the "Selector" concept? That's usually where most networking bugs hide.
+
