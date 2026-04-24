@@ -6,6 +6,8 @@
 - *NIST SP 1800-35 Full Document (web edition) at pages.nist.gov/zero-trust-architecture*
 - *NIST SP 800-207, "Zero Trust Architecture" (foundational reference)*
 - *Enterprise Identity Architecture: A Practitioner's Guide to Multi-Protocol Authentication and Authorization*
+- https://pages.nist.gov/zero-trust-architecture/VolumeB/architecture.html#zta-in-operation
+- https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.1800-35.pdf
 
 ---
 
