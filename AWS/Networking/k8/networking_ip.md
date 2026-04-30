@@ -51,9 +51,7 @@ Nodes on a small slice of 10.0.0.0/8 (say a `/20` per cluster — only need IPs 
 
 This gives you the CGNAT-style "pod IPs aren't directly exposed, so reuse is fine" property you described, while keeping your routable 10.0.0.0/8 space for things that actually need to be reachable.
 
-Want me to sketch the actual `ENIConfig` YAML and the VPC CNI environment variables, or dig into how Istio multi-cluster east-west gateways work when pod CIDRs overlap?
-
-I'll search for the official AWS documentation on this.Let me also pull the AWS blog on private NAT gateway with overlapping CIDRs, since that's the key reference for your multi-mission-owner reuse scenario.I have the official AWS sources. Here's the AWS-recommended approach with proper references.
+ Here's the AWS-recommended approach with proper references.
 
 # AWS Recommended Method for Mission-Owner IP Conservation
 
@@ -87,7 +85,7 @@ This is the architectural pattern you should put in front of your mission owners
 
 | Address space | Purpose | Mission-owner sharing |
 |---|---|---|
-| **Routable** (small slice of 10.0.0.0/8, e.g. /20 or /24 per VPC) | Nodes, NAT gateways, ALBs/NLBs, VPC endpoints — anything that needs to be reachable from outside the VPC | **Must be unique** — IPAM team allocates |
+| **Routable** (small slice of 10.0.0.0/8, e.g. /20 or /24 per VPC) | Nodes, NAT gateways, ALBs/NLBs, VPC endpoints — anything that needs to be reachable from outside the VPC | **Must be unique** —  |
 | **Non-routable** (100.64.0.0/10 or 198.19.0.0/16) | Pod IPs via CNI custom networking | **Can overlap** across mission owners |
 
 AWS's framing in the [Cloud WAN service insertion blog](https://aws.amazon.com/blogs/networking-and-content-delivery/addressing-private-ipv4-exhaustion-with-aws-cloud-wan-service-insertion/) (June 2025) makes the design intent explicit: the approach is based on assigning a private IPv4 range that is routable only within your AWS environment and deploying centralized NAT and PrivateLink at the level rather than at the VPC level. They specifically suggest carving 100.64.0.0/10 into /12 slices per Region.
