@@ -1,6 +1,5 @@
 # Conserving VPC IP Space for K8s/Istio Mission Owners on AWS
 
-Great question — this is one of the classic IP exhaustion problems on EKS,
 
 ## The core problem
 
