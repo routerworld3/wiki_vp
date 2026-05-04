@@ -1,6 +1,4 @@
-Good question — this is exactly where things “click” or stay confusing.
 
-Let’s strip the marketing away and explain **what actually happens in the cluster** when you install these.
 
 ---
 
