@@ -24,7 +24,7 @@ An m5.large can attach **up to 3 ENIs**. Each ENI can hold **up to 10 IP address
 
 ```mermaid
 flowchart LR
-  subgraph NODE["One EC2 m5.large node<br/>Subnet: 10.0.1.0/24<br/>Max: 3 ENIs, 10 IP slots per ENI"]
+  subgraph NODE["One EC2 m5.large node Subnet: 10.0.1.0/24<br/>Max: 3 ENIs, 10 IP slots per ENI"]
     subgraph E0["Primary ENI / eth0"]
       E0P["Primary IP<br/>10.0.1.10<br/>NODE IP: kubelet, SSH, image pulls"]
       E0S["Secondary IPs<br/>10.0.1.11 - 10.0.1.19<br/>Used by Pods in default mode"]
