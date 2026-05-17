@@ -1,0 +1,243 @@
+<svg id="svg-istio" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <marker id="istio-arr" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M2 1L10 6L2 11" fill="none" stroke="#2c2820" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- Background -->
+      <rect x="0" y="0" width="1200" height="1200" fill="#fdfbf3"/>
+
+      <!-- Title strip -->
+      <rect x="0" y="0" width="1200" height="34" fill="#2c2820"/>
+      <text x="20" y="22" font-family="Iowan Old Style, serif" font-size="14" font-weight="600" fill="#fde68a">The 7 matches that wire an Istio-routed Kubernetes app together</text>
+
+      <!-- DEPLOYMENT -->
+      <rect x="20" y="56" width="280" height="290" rx="8" fill="#fffbeb" stroke="#d4c896" stroke-width="1.5"/>
+      <rect x="20" y="56" width="280" height="28" rx="8" fill="#fef3c7" stroke="none"/>
+      <rect x="20" y="78" width="280" height="6" fill="#fef3c7"/>
+      <text x="34" y="74" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#78350f">deployment.yaml</text>
+
+      <text x="34" y="106" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">apiVersion: apps/v1</text>
+      <text x="34" y="122" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">kind: Deployment</text>
+      <text x="34" y="138" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">metadata:</text>
+      <text x="50" y="154" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">name: webapp</text>
+      <text x="34" y="170" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">spec:</text>
+      <text x="50" y="186" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">selector:</text>
+      <text x="66" y="202" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">matchLabels:</text>
+
+      <rect x="82" y="207" width="115" height="16" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+      <text x="86" y="219" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#78350f">app: webapp</text>
+
+      <text x="50" y="240" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">template:</text>
+      <text x="66" y="256" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">metadata:</text>
+      <text x="82" y="272" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">labels:</text>
+
+      <rect x="98" y="277" width="115" height="16" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="102" y="289" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#1e3a8a">app: webapp</text>
+
+      <text x="66" y="310" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">containers:</text>
+      <text x="82" y="326" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">- ports:</text>
+
+      <rect x="146" y="321" width="108" height="16" rx="3" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="150" y="333" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#14532d">containerPort:80</text>
+
+      <!-- SERVICE -->
+      <rect x="320" y="56" width="280" height="290" rx="8" fill="#f0fdf4" stroke="#d4c896" stroke-width="1.5"/>
+      <rect x="320" y="56" width="280" height="28" rx="8" fill="#dcfce7" stroke="none"/>
+      <rect x="320" y="78" width="280" height="6" fill="#dcfce7"/>
+      <text x="334" y="74" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#14532d">service.yaml</text>
+
+      <text x="334" y="106" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">apiVersion: v1</text>
+      <text x="334" y="122" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">kind: Service</text>
+      <text x="334" y="138" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">metadata:</text>
+      <text x="350" y="154" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">name:</text>
+
+      <rect x="398" y="143" width="140" height="16" rx="3" fill="#fce7f3" stroke="#db2777" stroke-width="1.5"/>
+      <text x="402" y="155" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#831843">webapp-service</text>
+
+      <text x="334" y="178" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">spec:</text>
+      <text x="350" y="194" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">type: ClusterIP</text>
+      <text x="350" y="210" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">selector:</text>
+
+      <rect x="366" y="217" width="115" height="16" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="370" y="229" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#1e3a8a">app: webapp</text>
+
+      <text x="350" y="252" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">ports:</text>
+      <text x="350" y="268" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">- port:</text>
+
+      <rect x="398" y="257" width="35" height="16" rx="3" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+      <text x="402" y="269" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#3b0764">80</text>
+
+      <text x="366" y="292" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">targetPort:</text>
+
+      <rect x="438" y="281" width="35" height="16" rx="3" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="442" y="293" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#14532d">80</text>
+
+      <!-- VIRTUALSERVICE -->
+      <rect x="620" y="56" width="280" height="290" rx="8" fill="#fff7ed" stroke="#d4c896" stroke-width="1.5"/>
+      <rect x="620" y="56" width="280" height="28" rx="8" fill="#ffedd5" stroke="none"/>
+      <rect x="620" y="78" width="280" height="6" fill="#ffedd5"/>
+      <text x="634" y="74" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#7c2d12">virtualservice.yaml</text>
+
+      <text x="634" y="106" font-family="SF Mono, monospace" font-size="10" fill="#2c2820">apiVersion: networking.istio.io/v1alpha3</text>
+      <text x="634" y="122" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">kind: VirtualService</text>
+      <text x="634" y="138" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">metadata:</text>
+      <text x="650" y="154" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">name: webapp-vs</text>
+      <text x="634" y="170" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">spec:</text>
+      <text x="650" y="186" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">gateways:</text>
+      <text x="666" y="202" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">-</text>
+
+      <rect x="682" y="191" width="140" height="16" rx="3" fill="#ffedd5" stroke="#ea580c" stroke-width="1.5"/>
+      <text x="686" y="203" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#7c2d12">webapp-gateway</text>
+
+      <text x="650" y="226" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">http:</text>
+      <text x="666" y="242" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">- route:</text>
+      <text x="682" y="258" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">- destination:</text>
+      <text x="698" y="274" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">host:</text>
+
+      <rect x="746" y="263" width="140" height="16" rx="3" fill="#fce7f3" stroke="#db2777" stroke-width="1.5"/>
+      <text x="750" y="275" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#831843">webapp-service</text>
+
+      <text x="698" y="298" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">port:</text>
+      <text x="714" y="314" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">number:</text>
+
+      <rect x="772" y="303" width="35" height="16" rx="3" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+      <text x="776" y="315" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#3b0764">80</text>
+
+      <!-- GATEWAY -->
+      <rect x="920" y="56" width="260" height="290" rx="8" fill="#fff7ed" stroke="#d4c896" stroke-width="1.5"/>
+      <rect x="920" y="56" width="260" height="28" rx="8" fill="#ffedd5" stroke="none"/>
+      <rect x="920" y="78" width="260" height="6" fill="#ffedd5"/>
+      <text x="934" y="74" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#7c2d12">gateway.yaml</text>
+
+      <text x="934" y="106" font-family="SF Mono, monospace" font-size="10" fill="#2c2820">apiVersion: networking.istio.io/v1alpha3</text>
+      <text x="934" y="122" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">kind: Gateway</text>
+      <text x="934" y="138" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">metadata:</text>
+      <text x="950" y="154" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">name:</text>
+
+      <rect x="998" y="143" width="140" height="16" rx="3" fill="#ffedd5" stroke="#ea580c" stroke-width="1.5"/>
+      <text x="1002" y="155" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#7c2d12">webapp-gateway</text>
+
+      <text x="934" y="178" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">spec:</text>
+      <text x="950" y="194" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">selector:</text>
+
+      <rect x="966" y="201" width="170" height="16" rx="3" fill="#cffafe" stroke="#0891b2" stroke-width="1.5"/>
+      <text x="970" y="213" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#164e63">istio: ingressgateway</text>
+
+      <text x="950" y="236" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">servers:</text>
+      <text x="966" y="252" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">- port:</text>
+      <text x="982" y="268" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">number: 80</text>
+      <text x="982" y="284" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">name: http</text>
+      <text x="982" y="300" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">protocol: HTTP</text>
+      <text x="966" y="316" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">hosts: ["*"]</text>
+
+      <!-- INGRESSGATEWAY POD -->
+      <rect x="490" y="430" width="320" height="120" rx="8" fill="#ecfeff" stroke="#0891b2" stroke-width="1.5" stroke-dasharray="6 3"/>
+      <rect x="490" y="430" width="320" height="28" rx="8" fill="#cffafe" stroke="none"/>
+      <rect x="490" y="452" width="320" height="6" fill="#cffafe"/>
+      <text x="504" y="448" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#164e63">istio-ingressgateway Pod (cluster-installed)</text>
+
+      <text x="504" y="480" font-family="SF Mono, monospace" font-size="10" fill="#5b5750">kubectl get pod -n istio-system -l istio=ingressgateway</text>
+      <text x="504" y="500" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">metadata.labels:</text>
+
+      <rect x="520" y="510" width="170" height="16" rx="3" fill="#cffafe" stroke="#0891b2" stroke-width="1.5"/>
+      <text x="524" y="522" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#164e63">istio: ingressgateway</text>
+
+      <text x="504" y="542" font-family="Iowan Old Style, serif" font-size="11" font-style="italic" fill="#5b5750">^ not in your YAML — installed by istioctl/operator</text>
+
+      <!-- ARROWS -->
+      <path d="M 144 215 Q 5 240 5 245 Q 5 280 96 285" fill="none" stroke="#d97706" stroke-width="2" stroke-dasharray="6 3"/>
+      <text x="12" y="252" font-family="Iowan Old Style, serif" font-size="11" font-weight="700" fill="#78350f" transform="rotate(-90 12 252)">A: same labels</text>
+
+      <path d="M 213 285 L 366 225" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#istio-arr)"/>
+      <text x="225" y="265" font-family="Iowan Old Style, serif" font-size="12" font-weight="700" fill="#1e3a8a">B: Service finds Pod</text>
+
+      <path d="M 254 329 L 438 289" fill="none" stroke="#16a34a" stroke-width="2.5" marker-end="url(#istio-arr)"/>
+      <text x="265" y="320" font-family="Iowan Old Style, serif" font-size="12" font-weight="700" fill="#14532d">C: port match</text>
+
+      <path d="M 538 151 L 746 271" fill="none" stroke="#db2777" stroke-width="2.5" marker-end="url(#istio-arr)"/>
+      <text x="595" y="200" font-family="Iowan Old Style, serif" font-size="12" font-weight="700" fill="#831843">D: name lookup</text>
+
+      <path d="M 433 265 L 772 311" fill="none" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#istio-arr)"/>
+      <text x="570" y="295" font-family="Iowan Old Style, serif" font-size="12" font-weight="700" fill="#3b0764">E: port lookup</text>
+
+      <path d="M 998 151 L 822 199" fill="none" stroke="#ea580c" stroke-width="2.5" marker-end="url(#istio-arr)"/>
+      <text x="855" y="145" font-family="Iowan Old Style, serif" font-size="12" font-weight="700" fill="#7c2d12">F: gateway ref</text>
+
+      <path d="M 1050 217 Q 1050 380 690 510" fill="none" stroke="#0891b2" stroke-width="2.5" stroke-dasharray="6 3" marker-end="url(#istio-arr)"/>
+      <text x="1060" y="360" font-family="Iowan Old Style, serif" font-size="12" font-weight="700" fill="#164e63">G: label selects</text>
+      <text x="1060" y="378" font-family="Iowan Old Style, serif" font-size="12" font-weight="700" fill="#164e63">edge Envoy Pod</text>
+
+      <!-- LEGEND PANEL -->
+      <rect x="20" y="600" width="1160" height="585" rx="8" fill="#fdfbf3" stroke="#d4c896" stroke-width="1.5"/>
+      <text x="40" y="628" font-family="Iowan Old Style, serif" font-size="16" font-weight="700" fill="#0d0d0d">The 7 matches — what fails when each one breaks</text>
+
+      <rect x="40" y="648" width="28" height="20" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+      <text x="54" y="662" text-anchor="middle" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#78350f">A</text>
+      <text x="80" y="655" font-family="Iowan Old Style, serif" font-size="13" font-weight="700" fill="#2c2820">Deployment selector ↔ Pod template labels</text>
+      <text x="80" y="671" font-family="Iowan Old Style, serif" font-size="12" fill="#5b5750">Within Deployment. Mismatch → kubectl apply REJECTS the file. (loud failure)</text>
+
+      <rect x="40" y="688" width="28" height="20" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="54" y="702" text-anchor="middle" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#1e3a8a">B</text>
+      <text x="80" y="695" font-family="Iowan Old Style, serif" font-size="13" font-weight="700" fill="#2c2820">Service selector ↔ Pod labels</text>
+      <text x="80" y="711" font-family="Iowan Old Style, serif" font-size="12" fill="#5b5750">Cross-file. Mismatch → Service has 0 endpoints. Traffic silently drops. (silent failure)</text>
+
+      <rect x="40" y="728" width="28" height="20" rx="3" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="54" y="742" text-anchor="middle" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#14532d">C</text>
+      <text x="80" y="735" font-family="Iowan Old Style, serif" font-size="13" font-weight="700" fill="#2c2820">Service targetPort ↔ Pod containerPort (app's listening port)</text>
+      <text x="80" y="751" font-family="Iowan Old Style, serif" font-size="12" fill="#5b5750">Cross-file. Mismatch → Service forwards to a dead port. Connection refused. (silent failure)</text>
+
+      <rect x="40" y="768" width="28" height="20" rx="3" fill="#fce7f3" stroke="#db2777" stroke-width="1.5"/>
+      <text x="54" y="782" text-anchor="middle" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#831843">D</text>
+      <text x="80" y="775" font-family="Iowan Old Style, serif" font-size="13" font-weight="700" fill="#2c2820">VirtualService destination.host ↔ Service metadata.name</text>
+      <text x="80" y="791" font-family="Iowan Old Style, serif" font-size="12" fill="#5b5750">Cross-file. Mismatch → Envoy returns 503 NR (no route). Cluster-not-found in proxy logs.</text>
+
+      <rect x="40" y="808" width="28" height="20" rx="3" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+      <text x="54" y="822" text-anchor="middle" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#3b0764">E</text>
+      <text x="80" y="815" font-family="Iowan Old Style, serif" font-size="13" font-weight="700" fill="#2c2820">VirtualService port.number ↔ Service port (NOT targetPort!)</text>
+      <text x="80" y="831" font-family="Iowan Old Style, serif" font-size="12" fill="#5b5750">Cross-file. Mismatch → Envoy cannot reach Service port. 503 UH (no healthy upstream).</text>
+
+      <rect x="40" y="848" width="28" height="20" rx="3" fill="#ffedd5" stroke="#ea580c" stroke-width="1.5"/>
+      <text x="54" y="862" text-anchor="middle" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#7c2d12">F</text>
+      <text x="80" y="855" font-family="Iowan Old Style, serif" font-size="13" font-weight="700" fill="#2c2820">VirtualService gateways[] ↔ Gateway metadata.name <tspan fill="#ea580c">— ISTIO NEW</tspan></text>
+      <text x="80" y="871" font-family="Iowan Old Style, serif" font-size="12" fill="#5b5750">Cross-file. Mismatch → VS rules are never applied. Route 404s at edge. Hardest to diagnose.</text>
+
+      <rect x="40" y="888" width="28" height="20" rx="3" fill="#cffafe" stroke="#0891b2" stroke-width="1.5"/>
+      <text x="54" y="902" text-anchor="middle" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#164e63">G</text>
+      <text x="80" y="895" font-family="Iowan Old Style, serif" font-size="13" font-weight="700" fill="#2c2820">Gateway selector ↔ istio-ingressgateway Pod labels <tspan fill="#0891b2">— ISTIO NEW</tspan></text>
+      <text x="80" y="911" font-family="Iowan Old Style, serif" font-size="12" fill="#5b5750">Cross-cluster. Mismatch → no edge Envoy applies the Gateway. Port never opens. Total silent failure.</text>
+
+      <!-- Right column: chain -->
+      <text x="640" y="655" font-family="Iowan Old Style, serif" font-size="14" font-weight="700" fill="#0d0d0d">The Istio chain — read top to bottom</text>
+      <rect x="640" y="668" width="520" height="500" rx="6" fill="#2c2820" stroke="none"/>
+
+      <text x="660" y="695" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#fde68a">Internet</text>
+      <text x="660" y="711" font-family="SF Mono, monospace" font-size="12" fill="#d4c896">   │</text>
+      <text x="660" y="727" font-family="SF Mono, monospace" font-size="12" fill="#d4c896">   ▼  hits NLB → NodePort →</text>
+      <text x="660" y="743" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#67e8f9">istio-ingressgateway Pod (edge Envoy)</text>
+      <text x="660" y="759" font-family="SF Mono, monospace" font-size="12" fill="#d4c896">   │  matched by G (label) — Gateway</text>
+      <text x="660" y="775" font-family="SF Mono, monospace" font-size="12" fill="#d4c896">   │  selector says: this is my Envoy</text>
+      <text x="660" y="791" font-family="SF Mono, monospace" font-size="12" fill="#d4c896">   ▼</text>
+      <text x="660" y="807" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#fb923c">Gateway config (opens port 80)</text>
+      <text x="660" y="823" font-family="SF Mono, monospace" font-size="12" fill="#d4c896">   │  matched by F (name) — VS</text>
+      <text x="660" y="839" font-family="SF Mono, monospace" font-size="12" fill="#d4c896">   │  attaches its rules here</text>
+      <text x="660" y="855" font-family="SF Mono, monospace" font-size="12" fill="#d4c896">   ▼</text>
+      <text x="660" y="871" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#fb923c">VirtualService rules (L7 routing)</text>
+      <text x="660" y="887" font-family="SF Mono, monospace" font-size="12" fill="#d4c896">   │  matched by D (name) + E (port)</text>
+      <text x="660" y="903" font-family="SF Mono, monospace" font-size="12" fill="#d4c896">   ▼</text>
+      <text x="660" y="919" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#f9a8d4">Service (ClusterIP)</text>
+      <text x="660" y="935" font-family="SF Mono, monospace" font-size="12" fill="#d4c896">   │  matched by B (label) + C (port)</text>
+      <text x="660" y="951" font-family="SF Mono, monospace" font-size="12" fill="#d4c896">   ▼</text>
+      <text x="660" y="967" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#86efac">App Pod (with Envoy sidecar)</text>
+
+      <text x="660" y="995" font-family="SF Mono, monospace" font-size="12" fill="#d4c896">─────────────────────────────────</text>
+      <text x="660" y="1015" font-family="SF Mono, monospace" font-size="12" fill="#d4c896">Separately:</text>
+      <text x="660" y="1031" font-family="SF Mono, monospace" font-size="12" fill="#fcd34d">Deployment ──A──▶ creates App Pod</text>
+      <text x="660" y="1051" font-family="SF Mono, monospace" font-size="12" fill="#fcd34d">              with labels for B</text>
+
+      <text x="660" y="1083" font-family="Iowan Old Style, serif" font-size="12" font-style="italic" fill="#d4c896">Two new Istio matches (F, G) connect the</text>
+      <text x="660" y="1101" font-family="Iowan Old Style, serif" font-size="12" font-style="italic" fill="#d4c896">edge: VirtualService → Gateway → Envoy Pod.</text>
+      <text x="660" y="1119" font-family="Iowan Old Style, serif" font-size="12" font-style="italic" fill="#d4c896">The other five (A–E) are unchanged from</text>
+      <text x="660" y="1137" font-family="Iowan Old Style, serif" font-size="12" font-style="italic" fill="#d4c896">plain Kubernetes wiring.</text>
+    </svg>
