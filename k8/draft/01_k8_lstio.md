@@ -2,6 +2,13 @@
 
 ## 0. The Mental Model First
 
+When you wish to deploy an application in Kubernetes, you usually define three components:
+
+- **Deployment** — a recipe for creating copies of your application.
+- **Service** — an internal load balancer that routes the traffic to Pods.
+- **An Ingress** — a description of how the traffic should flow from outside the cluster to your Service
+  **Notes**: with istio Ingress replaced with Gateway and Virtual Services 
+
 Before looking at YAML, remember who does what.
 
 | Object | Plain-English Job | What It Does **Not** Do |
