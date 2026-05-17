@@ -1,0 +1,163 @@
+<svg id="svg-k8s" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 720" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <marker id="k8s-arr" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M2 1L10 6L2 11" fill="none" stroke="#2c2820" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- Background -->
+      <rect x="0" y="0" width="1100" height="720" fill="#fdfbf3"/>
+
+      <!-- Title strip -->
+      <rect x="0" y="0" width="1100" height="34" fill="#2c2820"/>
+      <text x="20" y="22" font-family="Iowan Old Style, serif" font-size="14" font-weight="600" fill="#fde68a">The 5 matches that wire a Kubernetes app together</text>
+
+      <!-- DEPLOYMENT BOX -->
+      <rect x="20" y="56" width="340" height="280" rx="8" fill="#fffbeb" stroke="#d4c896" stroke-width="1.5"/>
+      <rect x="20" y="56" width="340" height="28" rx="8" fill="#fef3c7" stroke="none"/>
+      <rect x="20" y="78" width="340" height="6" fill="#fef3c7"/>
+      <text x="34" y="74" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#78350f">deployment.yaml</text>
+
+      <text x="34" y="106" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">apiVersion: apps/v1</text>
+      <text x="34" y="122" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">kind: Deployment</text>
+      <text x="34" y="138" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">metadata:</text>
+      <text x="50" y="154" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">name: webapp</text>
+      <text x="34" y="170" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">spec:</text>
+      <text x="50" y="186" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">selector:</text>
+      <text x="66" y="202" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">matchLabels:</text>
+
+      <rect x="82" y="207" width="115" height="16" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+      <text x="86" y="219" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#78350f">app: webapp</text>
+
+      <text x="50" y="240" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">template:</text>
+      <text x="66" y="256" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">metadata:</text>
+      <text x="82" y="272" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">labels:</text>
+
+      <rect x="98" y="277" width="115" height="16" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="102" y="289" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#1e3a8a">app: webapp</text>
+
+      <text x="66" y="310" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">containers:</text>
+      <text x="82" y="326" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">- ports:</text>
+
+      <rect x="146" y="321" width="108" height="16" rx="3" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="150" y="333" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#14532d">containerPort:80</text>
+
+      <!-- SERVICE BOX -->
+      <rect x="385" y="56" width="340" height="280" rx="8" fill="#f0fdf4" stroke="#d4c896" stroke-width="1.5"/>
+      <rect x="385" y="56" width="340" height="28" rx="8" fill="#dcfce7" stroke="none"/>
+      <rect x="385" y="78" width="340" height="6" fill="#dcfce7"/>
+      <text x="399" y="74" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#14532d">service.yaml</text>
+
+      <text x="399" y="106" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">apiVersion: v1</text>
+      <text x="399" y="122" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">kind: Service</text>
+      <text x="399" y="138" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">metadata:</text>
+      <text x="415" y="154" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">name:</text>
+
+      <rect x="463" y="143" width="140" height="16" rx="3" fill="#fce7f3" stroke="#db2777" stroke-width="1.5"/>
+      <text x="467" y="155" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#831843">webapp-service</text>
+
+      <text x="399" y="178" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">spec:</text>
+      <text x="415" y="194" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">selector:</text>
+
+      <rect x="431" y="201" width="115" height="16" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="435" y="213" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#1e3a8a">app: webapp</text>
+
+      <text x="415" y="236" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">ports:</text>
+      <text x="415" y="252" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">- port:</text>
+
+      <rect x="463" y="241" width="35" height="16" rx="3" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+      <text x="467" y="253" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#3b0764">80</text>
+
+      <text x="431" y="276" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">targetPort:</text>
+
+      <rect x="503" y="265" width="35" height="16" rx="3" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="507" y="277" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#14532d">80</text>
+
+      <!-- INGRESS BOX -->
+      <rect x="750" y="56" width="335" height="280" rx="8" fill="#eff6ff" stroke="#d4c896" stroke-width="1.5"/>
+      <rect x="750" y="56" width="335" height="28" rx="8" fill="#dbeafe" stroke="none"/>
+      <rect x="750" y="78" width="335" height="6" fill="#dbeafe"/>
+      <text x="764" y="74" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#1e3a8a">ingress.yaml</text>
+
+      <text x="764" y="106" font-family="SF Mono, monospace" font-size="10" fill="#2c2820">apiVersion: networking.k8s.io/v1</text>
+      <text x="764" y="122" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">kind: Ingress</text>
+      <text x="764" y="138" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">spec:</text>
+      <text x="780" y="154" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">rules:</text>
+      <text x="780" y="170" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">- http:</text>
+      <text x="796" y="186" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">paths:</text>
+      <text x="796" y="202" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">- path: /</text>
+      <text x="812" y="218" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">backend:</text>
+      <text x="828" y="234" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">service:</text>
+      <text x="844" y="250" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">name:</text>
+
+      <rect x="892" y="239" width="140" height="16" rx="3" fill="#fce7f3" stroke="#db2777" stroke-width="1.5"/>
+      <text x="896" y="251" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#831843">webapp-service</text>
+
+      <text x="844" y="274" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">port:</text>
+      <text x="860" y="290" font-family="SF Mono, monospace" font-size="11" fill="#2c2820">number:</text>
+
+      <rect x="918" y="279" width="35" height="16" rx="3" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+      <text x="922" y="291" font-family="SF Mono, monospace" font-size="11" font-weight="700" fill="#3b0764">80</text>
+
+      <!-- CONNECTING LINES -->
+      <path d="M 145 215 Q 5 240 5 245 Q 5 280 60 285" fill="none" stroke="#d97706" stroke-width="2" stroke-dasharray="6 3"/>
+      <text x="12" y="252" font-family="Iowan Old Style, serif" font-size="11" font-weight="700" fill="#78350f" transform="rotate(-90 12 252)">A: same labels</text>
+
+      <path d="M 213 285 L 431 209" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#k8s-arr)"/>
+      <text x="278" y="240" font-family="Iowan Old Style, serif" font-size="12" font-weight="700" fill="#1e3a8a">B: Service finds Pod</text>
+
+      <path d="M 254 329 L 503 273" fill="none" stroke="#16a34a" stroke-width="2.5" marker-end="url(#k8s-arr)"/>
+      <text x="320" y="313" font-family="Iowan Old Style, serif" font-size="12" font-weight="700" fill="#14532d">C: port match</text>
+
+      <path d="M 603 151 L 892 247" fill="none" stroke="#db2777" stroke-width="2.5" marker-end="url(#k8s-arr)"/>
+      <text x="690" y="190" font-family="Iowan Old Style, serif" font-size="12" font-weight="700" fill="#831843">D: name lookup</text>
+
+      <path d="M 498 249 L 918 287" fill="none" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#k8s-arr)"/>
+      <text x="650" y="278" font-family="Iowan Old Style, serif" font-size="12" font-weight="700" fill="#3b0764">E: port lookup</text>
+
+      <!-- LEGEND PANEL -->
+      <rect x="20" y="370" width="1065" height="330" rx="8" fill="#fdfbf3" stroke="#d4c896" stroke-width="1.5"/>
+      <text x="40" y="398" font-family="Iowan Old Style, serif" font-size="16" font-weight="700" fill="#0d0d0d">The 5 matches — what fails when each one breaks</text>
+
+      <rect x="40" y="418" width="28" height="20" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+      <text x="54" y="432" text-anchor="middle" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#78350f">A</text>
+      <text x="80" y="425" font-family="Iowan Old Style, serif" font-size="13" font-weight="700" fill="#2c2820">Deployment selector ↔ Pod template labels</text>
+      <text x="80" y="441" font-family="Iowan Old Style, serif" font-size="12" fill="#5b5750">Within Deployment. Mismatch → kubectl apply REJECTS the file. (loud failure)</text>
+
+      <rect x="40" y="466" width="28" height="20" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="54" y="480" text-anchor="middle" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#1e3a8a">B</text>
+      <text x="80" y="473" font-family="Iowan Old Style, serif" font-size="13" font-weight="700" fill="#2c2820">Service selector ↔ Pod labels</text>
+      <text x="80" y="489" font-family="Iowan Old Style, serif" font-size="12" fill="#5b5750">Cross-file. Mismatch → Service has 0 endpoints. Traffic silently drops. NO error. (silent failure)</text>
+
+      <rect x="40" y="514" width="28" height="20" rx="3" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="54" y="528" text-anchor="middle" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#14532d">C</text>
+      <text x="80" y="521" font-family="Iowan Old Style, serif" font-size="13" font-weight="700" fill="#2c2820">Service targetPort ↔ Pod containerPort (app's listening port)</text>
+      <text x="80" y="537" font-family="Iowan Old Style, serif" font-size="12" fill="#5b5750">Cross-file. Mismatch → Service forwards to a port nothing is listening on. Connection refused. (silent failure)</text>
+
+      <rect x="40" y="562" width="28" height="20" rx="3" fill="#fce7f3" stroke="#db2777" stroke-width="1.5"/>
+      <text x="54" y="576" text-anchor="middle" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#831843">D</text>
+      <text x="80" y="569" font-family="Iowan Old Style, serif" font-size="13" font-weight="700" fill="#2c2820">Ingress service.name ↔ Service metadata.name</text>
+      <text x="80" y="585" font-family="Iowan Old Style, serif" font-size="12" fill="#5b5750">Cross-file. Mismatch → Ingress backend reports "endpoints not found". 404 / 503 at the edge.</text>
+
+      <rect x="40" y="610" width="28" height="20" rx="3" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+      <text x="54" y="624" text-anchor="middle" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#3b0764">E</text>
+      <text x="80" y="617" font-family="Iowan Old Style, serif" font-size="13" font-weight="700" fill="#2c2820">Ingress service.port.number ↔ Service port (NOT targetPort!)</text>
+      <text x="80" y="633" font-family="Iowan Old Style, serif" font-size="12" fill="#5b5750">Cross-file. Mismatch → Ingress cannot reach Service. Connection refused at edge.</text>
+
+      <!-- Right column: the chain -->
+      <text x="640" y="425" font-family="Iowan Old Style, serif" font-size="14" font-weight="700" fill="#0d0d0d">The actual chain — read this carefully</text>
+      <rect x="640" y="438" width="430" height="252" rx="6" fill="#2c2820" stroke="none"/>
+      <text x="660" y="465" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#fde68a">Internet</text>
+      <text x="660" y="481" font-family="SF Mono, monospace" font-size="12" fill="#d4c896">   │</text>
+      <text x="660" y="497" font-family="SF Mono, monospace" font-size="12" fill="#d4c896">   ▼  matches by D (name) + E (port)</text>
+      <text x="660" y="513" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#f9a8d4">Ingress  ──▶  Service</text>
+      <text x="660" y="529" font-family="SF Mono, monospace" font-size="12" fill="#d4c896">                  │</text>
+      <text x="660" y="545" font-family="SF Mono, monospace" font-size="12" fill="#d4c896">                  ▼  matches by B (labels)</text>
+      <text x="660" y="561" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#93c5fd">              Service finds Pod</text>
+      <text x="660" y="577" font-family="SF Mono, monospace" font-size="12" fill="#d4c896">                  │</text>
+      <text x="660" y="593" font-family="SF Mono, monospace" font-size="12" fill="#d4c896">                  ▼  matches by C (port)</text>
+      <text x="660" y="609" font-family="SF Mono, monospace" font-size="12" font-weight="700" fill="#86efac">             Pod's app port</text>
+      <text x="660" y="635" font-family="SF Mono, monospace" font-size="12" fill="#d4c896">───────────────────────────────</text>
+      <text x="660" y="655" font-family="SF Mono, monospace" font-size="12" fill="#d4c896">Separately:</text>
+      <text x="660" y="671" font-family="SF Mono, monospace" font-size="12" fill="#fcd34d">Deployment ──A──▶ creates Pod with labels</text>
+    </svg>
