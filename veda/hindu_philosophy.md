@@ -1,5 +1,5 @@
 
-## Hindu Philosophy Schooles
+## Hindu Philosophy Schools
 
 Hindu philosophy has many schools, but the most discussed are **Vedānta schools**, because they interpret the **Upaniṣads, Bhagavad Gītā, and Brahma Sūtra**.
 
