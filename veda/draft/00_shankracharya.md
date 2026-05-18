@@ -328,16 +328,16 @@ So in many ways:
 
 ## Traditional View
 This mahavakya is often presented as the essence of Advaita Vedanta:
-Brahman alone is satya: Pure awareness, limitless, non-dual.
-World is mithya: Apparent, transactional, dependent on Brahman for existence.
-Jiva is Brahman: The apparent individual is none other than limitless awareness.
+- Brahman alone is satya: Pure awareness, limitless, non-dual.
+- World is mithya: Apparent, transactional, dependent on Brahman for existence.
+- Jiva is Brahman: The apparent individual is none other than limitless awareness.
 
 ## Vedantic Analysis
-World: Neither real nor unreal — a third category, mithya. Like dream, experienced while present, but negated upon enquiry.
-Ignorance: The only “veil” is avidya. Once removed, there is no distance between jiva and Ishvara.
-Resolution: The mahavakya removes the distinction between subject, object, and creator. All are seen as one consciousness.
+- World: Neither real nor unreal — a third category, mithya. Like dream, experienced while present, but negated upon enquiry.
+- Ignorance: The only “veil” is avidya. Once removed, there is no distance between jiva and Ishvara.
+- Resolution: The mahavakya removes the distinction between subject, object, and creator. All are seen as one consciousness.
 
 ## Common Misunderstandings
-Mithya = illusion: It does not mean “non-existent.” The world exists for transaction but lacks absolute reality. 
-Jiva disappears: Realization does not annihilate individuality but reveals its dependence and non-separateness.
-Brahman is remote: Brahman is the very Self, not a distant God.
+- Mithya = illusion: It does not mean “non-existent.” The world exists for transaction but lacks absolute reality. 
+- Jiva disappears: Realization does not annihilate individuality but reveals its dependence and non-separateness.
+- Brahman is remote: Brahman is the very Self, not a distant God.
