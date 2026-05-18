@@ -1,5 +1,5 @@
 
-## Big Picture
+## Hindu Philosophy Schooles
 
 Hindu philosophy has many schools, but the most discussed are **Vedānta schools**, because they interpret the **Upaniṣads, Bhagavad Gītā, and Brahma Sūtra**.
 
@@ -13,9 +13,39 @@ Hindu philosophy has many schools, but the most discussed are **Vedānta schools
 | **Achintya Bhedābheda**       | Śrī Caitanya Mahāprabhu |                     15th–16th century CE | Soul and God are simultaneously one and different in an inconceivable way            |
 
 ---
+```mermaid
+flowchart TB
+    Title["Six Major Vedānta Philosophies<br/><small>How the soul relates to God / Brahman</small>"]
 
-<img width="1472" height="1440" alt="image" src="https://github.com/user-attachments/assets/fe07bf8f-0c83-4ed7-8fca-7cd9436f99f3" />
+    Title --> Spectrum["Spectrum:<br/>Pure Non-Dualism ⟵──────────────⟶ Pure Dualism"]
 
+    Spectrum --> Advaita["Advaita Vedānta<br/><b>Ādi Śaṅkarācārya</b><br/>8th century CE<br/><br/>Ātman and Brahman are ultimately one"]
+    
+    Spectrum --> Visishtadvaita["Viśiṣṭādvaita<br/><b>Rāmānujācārya</b><br/>11th–12th century CE<br/><br/>Soul and world are real parts/modes of God"]
+
+    Spectrum --> Bhedabheda["Bhedābheda / Dvaitādvaita<br/><b>Nimbārkācārya</b><br/>12th–13th century CE<br/><br/>Soul is both different and non-different from God"]
+
+    Spectrum --> Dvaita["Dvaita Vedānta<br/><b>Madhvācārya</b><br/>13th century CE<br/><br/>God, soul, and world are eternally distinct"]
+
+    Spectrum --> Suddhadvaita["Śuddhādvaita<br/><b>Vallabhācārya</b><br/>15th–16th century CE<br/><br/>World is a real manifestation of God"]
+
+    Spectrum --> Achintya["Achintya Bhedābheda<br/><b>Śrī Caitanya Mahāprabhu</b><br/>15th–16th century CE<br/><br/>Soul and God are one and different inconceivably"]
+
+    Advaita --> Common
+    Visishtadvaita --> Common
+    Bhedabheda --> Common
+    Dvaita --> Common
+    Suddhadvaita --> Common
+    Achintya --> Common
+
+    Common["Common Ground<br/>All interpret the Upaniṣads, Bhagavad Gītā, and Brahma Sūtra<br/>Main difference: relation between Brahman, soul, and world"]
+
+    Common --> Paths["Main Path to Liberation"]
+
+    Paths --> Jnana["Jñāna<br/>Knowledge<br/>Strong Advaita emphasis"]
+    Paths --> Bhakti["Bhakti<br/>Devotion<br/>Most Vaishnava schools"]
+    Paths --> Seva["Sevā<br/>Service<br/>Strong Dvaita / Vaishnava emphasis"]
+```
 
 ## 1) Advaita Vedānta — Non-dualism
 
