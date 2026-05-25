@@ -201,19 +201,8 @@ flowchart LR
 
 ---
 
-## 6. Governance — the Non-Technical Half
 
-Technical conservation alone is not enough. A single deployment can still scale out and burn Pod IPs. Layer in:
-
-- **ResourceQuota** per namespace — cap pods, services, PVCs
-- **LimitRange** per namespace — default container requests/limits
-- **Cluster Autoscaler / Karpenter** node ceilings
-- **Dedicated node groups and secondary CIDRs** per Mission Owner where isolation matters
-- **A clear IPAM ownership model** — someone owns who gets which routable block
-
----
-
-## 7. IPv6 — Strategic, but Not a Quick Win
+## 6. IPv6 — Strategic, but Not a Quick Win
 
 IPv6 ends IPv4 scarcity at the protocol level. It is the right long-term direction.
 
@@ -232,7 +221,7 @@ It is **not** a near-term fix. Before flipping to dual-stack or IPv6-first EKS, 
 
 ---
 
-## 8. Decision Cheat-Sheet
+## 7. Decision Cheat-Sheet
 
 ```mermaid
 flowchart TD
@@ -268,7 +257,6 @@ flowchart TD
 - **Prefix Delegation** improves Pod density and IP allocation efficiency.
 - **Overlapping `100.64`** is fine *only if it stays inside the VPC*. Cross-VPC traffic must use routable IPs via NAT, ALB/NLB, or an Istio Gateway.
 - **IPv6** is the strategic answer — plan it, but don't wait for it.
-- **Governance** (quotas, IPAM, node-group caps) is half the solution.
 
 ---
 
