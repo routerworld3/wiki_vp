@@ -1,7 +1,9 @@
 # Avoiding IPv4 Exhaustion on EKS / Istio
 
 **Audience:** Mission Owners running EKS on AWS, with or without Istio
+
 **Goal:** Explain the problem, the recommended pattern, and the trade-offs — in one short read.
+
 **Companion file:** `eks-ip-exhaustion-implementation.md` (step-by-step config + verification commands)
 
 ---
@@ -20,16 +22,16 @@
 
 ## 1. The Problem
 
-By default, every Pod consumes a VPC IP from the **same routable subnet** as your nodes, load balancers, NAT gateways, and VPC endpoints. Multiply by hundreds of Pods per cluster, across many Mission Owners, and even `10.0.0.0/8` runs thin.
+By default, every Pod consumes a VPC IP from the **same routable subnet** as your nodes, load balancers, NAT gateways, and VPC endpoints. Multiply by hundreds of Pods per cluster, across many Mission Owners, and even `10.0.0.0/8` runs thin. Following is Sample VPC 
 
 ```mermaid
 flowchart TB
     subgraph VPC["VPC — 10.10.0.0/16 (routable, finite)"]
-        subgraph Subnet["Subnet 10.10.1.0/24 — everyone draws from here"]
-            Node["EC2 Node<br/>10.10.1.10"]
-            LB["NLB / VPC Endpoint<br/>10.10.1.20–24"]
-            NAT["NAT GW / TGW attach<br/>10.10.1.30–32"]
-            Pods["Pods ⚠ problem<br/>10.10.1.40, .41, .42, .43, .44,<br/>.45, .46, .47, .48, .49, .50, ..."]
+        subgraph Subnet["Subnets 10.10.1.0/24,10.10.2.0/24 — everyone draws from here"]
+            Node["EC2 Worker Node<br/>10.10.1.10"]
+            Endpoints["VPC Endpoints<br/>10.10.1.20–24"]
+            Services/Attachments["AWS Services/ TGW attach<br/>10.10.1.30–32"]
+            Pods["Pods ⚠ problem<br/>10.10.2.40, .41,.. .254, ..."]
         end
     end
 
@@ -39,7 +41,7 @@ flowchart TB
     class Pods problem
 ```
 
-**Math that hurts:** 50 Pods × 100 nodes ≈ 5,000 routable IPs gone — before counting warm pools, ENIs, LBs, and endpoints.
+**Math that hurts:** 100 Pods × 20 nodes ≈ 2,000 routable IPs gone — before counting warm pools, ENIs, LBs, and endpoints.
 
 **Istio note:** Pods with an Istio sidecar still get **one** IP — the sidecar container shares the Pod's network namespace. Istio is not the cause of IP exhaustion.
 
@@ -62,10 +64,10 @@ Move Pod IPs out of your routable VPC space into the shared address block `100.6
 ```mermaid
 flowchart TB
     subgraph VPC["VPC with primary + secondary CIDR"]
-        subgraph Primary["Primary CIDR 10.10.0.0/16 — routable, scarce"]
-            Node["EC2 Node<br/>10.10.1.10"]
-            LB["NLB / ALB / Endpoints<br/>10.10.1.20–24"]
-            NAT["NAT GW / TGW attach<br/>10.10.1.30–32"]
+        subgraph Primary["Primary CIDR 10.10.1.0/23 — routable, scarce"]
+            Node["EC2 Worker Nodes<br/>10.10.1.10"]
+            Endpoints["Endpoints<br/>10.10.1.130–150"]
+            Attachments["NAT GW / TGW attach<br/>10.10.1.30–32"]
         end
         subgraph Secondary["Secondary CIDR 100.64.0.0/16 — Pods only"]
             Pods["Pods<br/>100.64.1.10, .11, .12, .13, .14, ...<br/>Large, can overlap with other VPCs"]
