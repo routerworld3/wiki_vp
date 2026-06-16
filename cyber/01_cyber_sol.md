@@ -151,7 +151,7 @@ flowchart TD
     WEB[HTTP and HTTPS traffic] --> WAF["WAF<br/>Blocks SQL injection, XSS, bots"]
 ```
 
-### Quick comparisons every new engineer should know
+### Quick comparisons
 
 **NGFW vs traditional firewall:** Old firewalls only saw IPs and ports. NGFW also sees the *application* (it knows traffic is Dropbox, not just "port 443"), the *user*, and known *threats* — plus IPS, URL filtering, and TLS inspection in one box.
 
