@@ -302,7 +302,7 @@ Tools overlap — that's normal and intentional. Here's how to keep the most-con
 
 ---
 
-## 11. Current Industry Trends (Plain English)
+## 11. Current Industry Trends ()
 
 1. **Platform consolidation.** Companies are tired of managing 60+ tools. They're converging onto a few big platforms: CNAPP for cloud, SASE/SSE for user access, XDR for detection, NGFW for inline network, DSPM/DLP for data, SIEM/SOAR/MDR for the SOC. The goal isn't fewer tools for its own sake — it's fewer blind spots and better correlation.
 
@@ -336,28 +336,7 @@ If a vendor claims their single product "delivers Zero Trust," be skeptical — 
 
 ---
 
-## 13. Learning Path for a New Security Engineer
-
-A practical sequence to turn this map into real skills:
-
-**Phase 1 — Fundamentals (months 0–6)**
-- Networking: TCP/IP, DNS, TLS, how a firewall actually filters
-- Linux basics and one scripting language (Python or bash)
-- Identity concepts: authentication vs authorization, IAM roles, least privilege
-- Frameworks as maps: skim NIST CSF 2.0 (Govern, Identify, Protect, Detect, Respond, Recover) and the CISA Zero Trust Maturity Model
-
-**Phase 2 — Pick a cloud and break things (months 6–12)**
-- Spin up an AWS or Azure free-tier account
-- Deliberately misconfigure resources, then find them with a free CSPM tool (Prowler, ScoutSuite) — this is exactly what CNAPP vendors automate
-- Map findings to CIS Benchmarks
-
-**Phase 3 — Hands-on detection (months 12–18)**
-- Run a home SIEM lab (Elastic or Wazuh) and feed it logs
-- Practice blue-team scenarios on TryHackMe or LetsDefend
-- Learn MITRE ATT&CK as the language of detection
-
-**Phase 4 — Go deep on one platform**
-- Consolidation means platform skills transfer: pick the ecosystem dominating your target sector (Microsoft Sentinel/Defender for enterprise, Wiz/Prisma for cloud-native, Palo Alto/Zscaler for network roles) and pursue its certification.
+## 13. In Summary
 
 **The golden rule:** Don't buy (or learn) tools by acronym. Map them to problems. Acronyms get rebranded every few years; the problems — misconfiguration, compromise, over-permissioning, data leakage — stay the same.
 
