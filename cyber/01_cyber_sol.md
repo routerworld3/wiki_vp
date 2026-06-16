@@ -60,7 +60,7 @@ flowchart TD
 
 ## 3. Domain 1: Cloud Security (The CNAPP Family)
 
-### The problem in plain English
+### The problem 
 
 You build things in AWS or Azure. Three things go wrong constantly:
 
@@ -105,7 +105,7 @@ One chained attack path like this matters more than thousands of isolated findin
 
 ## 4. Domain 2: Endpoint and Workload Security (EDR → XDR)
 
-### The problem in plain English
+### The problem 
 
 A laptop or server gets compromised. You need to know: *what process ran, what files changed, what the attacker did* — and you need to contain it fast.
 
@@ -138,7 +138,7 @@ Many organizations run **both** on cloud servers.
 
 ## 5. Domain 3: Network Security (NGFW, NDR, WAF)
 
-### The problem in plain English
+### The problem 
 
 Traffic flows through your network. You need to **block** the bad (enforcement) and **see** the sneaky (visibility) — and protect web apps from attacks built into legitimate-looking HTTP requests.
 
@@ -165,7 +165,7 @@ flowchart TD
 
 ## 6. Domain 4: User Access Security (SASE and SSE)
 
-### The problem in plain English
+### The problem 
 
 Your users are everywhere — home, coffee shops, branch offices. Your apps are everywhere too — SaaS, cloud, on-prem. The old model of "VPN everyone into the office network and route through one firewall" is slow and risky. SASE moves security to the cloud edge, close to the user.
 
@@ -197,7 +197,7 @@ flowchart LR
 
 ## 7. Domain 5: Data Security (DSPM, DLP, CASB)
 
-### The problem in plain English
+### The problem 
 
 Sensitive data (customer PII, credentials, regulated data) is scattered across S3 buckets, databases, SaaS apps, and file shares. Two questions matter: *Where is it and who can reach it?* and *How do I stop it from leaking?*
 
@@ -215,7 +215,7 @@ These three overlap heavily — that's why they're increasingly bundled into CNA
 
 ## 8. Domain 6: SOC Operations (SIEM, SOAR, MDR)
 
-### The problem in plain English
+### The problem 
 
 All the tools above generate alerts and logs. Someone has to collect them, connect them, investigate them, and respond — at 3 AM on a Saturday too.
 
