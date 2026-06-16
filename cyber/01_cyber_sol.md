@@ -8,28 +8,29 @@
 
 ## 1. The 30-Second Mental Model
 
-Memorize this table first. Everything else in this guide expands on it.
+| Acronym        | Full Form                                          | Actual Function Currently                                                                                                                                     |
+| -------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **CNAPP**      | Cloud-Native Application Protection Platform       | Consolidates CSPM, CWPP, CIEM, vulnerability management, IaC scanning, container/Kubernetes security, and cloud risk prioritization into one platform.        |
+| **CSPM**       | Cloud Security Posture Management                  | Continuously scans cloud accounts for insecure configurations, compliance drift, exposed services, logging gaps, and policy violations.                       |
+| **CWPP**       | Cloud Workload Protection Platform                 | Protects compute workloads by monitoring runtime behavior, vulnerabilities, malware, process activity, container risks, and host security posture.            |
+| **CIEM**       | Cloud Infrastructure Entitlement Management        | Analyzes IAM permissions, unused privileges, privilege escalation paths, risky roles, service accounts, and identity access patterns.                         |
+| **EDR**        | Endpoint Detection and Response                    | Collects endpoint telemetry, detects malicious behavior, quarantines files, isolates hosts, investigates incidents, and supports response actions.            |
+| **XDR**        | Extended Detection and Response                    | Correlates alerts across endpoint, identity, email, network, SaaS, and cloud systems to detect broader attack campaigns.                                      |
+| **NDR**        | Network Detection and Response                     | Monitors network flows, packets, DNS, TLS metadata, east-west traffic, and anomalies to detect lateral movement or command-and-control activity.              |
+| **NGFW**       | Next-Generation Firewall                           | Enforces network security policy using application awareness, user identity, IPS, URL filtering, malware prevention, TLS inspection, and threat intelligence. |
+| **WAF**        | Web Application Firewall                           | Inspects HTTP/S traffic to block common web exploits, bots, malicious payloads, API abuse, and application-layer attacks.                                     |
+| **SASE / SSE** | Secure Access Service Edge / Security Service Edge | Delivers cloud-based user security. SASE combines SSE with SD-WAN; SSE includes SWG, CASB, ZTNA, and DLP-style controls.                                      |
+| **CASB**       | Cloud Access Security Broker                       | Discovers SaaS usage, monitors risky apps, controls data sharing, enforces SaaS policies, and detects suspicious cloud application behavior.                  |
+| **SWG**        | Secure Web Gateway                                 | Filters internet access, blocks malicious sites, inspects downloads, applies URL/category policies, and protects users from web-based threats.                |
+| **ZTNA**       | Zero Trust Network Access                          | Provides identity-based, least-privilege access to private applications without placing users directly on the network.                                        |
+| **DSPM**       | Data Security Posture Management                   | Finds sensitive data across cloud storage, databases, SaaS, and data lakes; maps exposure, access paths, and data security risks.                             |
+| **DLP**        | Data Loss Prevention                               | Detects and prevents sensitive data leakage through email, web, endpoint, SaaS, cloud storage, and file transfers.                                            |
+| **SIEM**       | Security Information and Event Management          | Aggregates logs, normalizes events, correlates alerts, supports threat detection, compliance reporting, investigation, and SOC dashboards.                    |
+| **SOAR**       | Security Orchestration, Automation, and Response   | Automates incident response playbooks such as enrichment, ticket creation, containment, notification, and evidence collection.                                |
+| **MDR**        | Managed Detection and Response                     | Provides outsourced monitoring, threat hunting, alert triage, investigation, and response using provider analysts and security tools.                         |
 
-| Acronym | One-line job description |
-|---|---|
-| **CNAPP** | The cloud risk "brain" — combines all cloud security checks in one platform |
-| **CSPM** | Finds cloud misconfigurations (public buckets, open ports, weak settings) |
-| **CWPP** | Protects running workloads (servers, VMs, containers) |
-| **CIEM** | Finds over-permissioned cloud identities and IAM roles |
-| **EDR** | Detects and responds to compromise on endpoints and servers |
-| **XDR** | EDR + identity + email + cloud signals correlated together |
-| **NDR** | Watches network traffic for suspicious behavior (visibility, not blocking) |
-| **NGFW** | Inline firewall that understands apps, users, and threats (blocking) |
-| **WAF** | Protects web applications from HTTP attacks (SQL injection, XSS) |
-| **SASE / SSE** | Secures users connecting to internet, SaaS, and private apps from anywhere |
-| **CASB** | Visibility and control over SaaS app usage (shadow IT) |
-| **SWG** | Secure web browsing — filters and inspects user web traffic |
-| **ZTNA** | The VPN replacement — per-app access based on identity |
-| **DSPM** | Discovers where sensitive data lives and who can reach it |
-| **DLP** | Stops sensitive data from leaving approved channels |
-| **SIEM** | Central log collection and correlation for the SOC |
-| **SOAR** | Automates repetitive SOC response workflows |
-| **MDR** | A managed service — someone else watches and responds for you |
+
+
 
 ---
 
