@@ -191,7 +191,7 @@ flowchart LR
 - **ZTNA** = a keycard for each door, instead of a key to the whole building. The old VPN put users *on the network*; ZTNA grants access to *one app at a time* based on identity and device health.
 - **FWaaS** = your firewall, delivered from the cloud instead of a box in your rack.
 
-> **Example vendors:** Zscaler, Netskope, Palo Alto Prisma Access, Cloudflare One, Cisco Secure Access.
+> **Example vendors:** Zscaler, Netskope,Appgate, Palo Alto Prisma Access, Cloudflare One, Cisco Secure Access.
 
 ---
 
