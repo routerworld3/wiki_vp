@@ -369,6 +369,8 @@ flowchart TD
 
 ## Bottom line
 
+https://excalidraw.com/#json=6LeHiQ3cW_hfj1Z6mAOgq,A863ZlUWSQ2G8sQvTCVFeQ
+
 For **Splunk**, use the **Splunk Add-on for Microsoft Security**. Start with Defender incidents/alerts, then add Event Hub streaming for selected Advanced Hunting tables only.
 
 For **multi-tenant Sentinel**, the best pattern is **one Sentinel workspace per tenant**, each connected to its own Defender XDR/MDE tenant, then use **Azure Lighthouse and Microsoft Defender multitenant management** for central SOC visibility.
