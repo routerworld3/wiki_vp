@@ -1,4 +1,4 @@
-# Centralized Logging Architecture — Mermaid Diagrams
+# Log Format 
 
 A set of diagrams derived from the architecture document. Each captures one distinct
 idea rather than cramming everything into a single chart.
