@@ -1,5 +1,9 @@
 This caveat is describing **why outbound TLS inspection requires a CA cert and not just a server cert** — and it comes down to the fact that Network Firewall is performing a **man-in-the-middle (MITM)** on your outbound traffic. Let me break down what's happening and how it differs from a "regular" TLS certificate.
 
+A **regular server (leaf) cert** identifies one specific site — it's valid only for the domains listed in it (e.g., `github.com`), and its job is to prove "I am this server." A **CA cert** is a *signing* cert — its job is to issue and vouch for other certs, so whatever it signs is trusted by anyone who trusts the CA.
+
+That's why inspection needs a CA cert, not a leaf: a leaf could only impersonate its own named domains, but a CA can mint a fresh cert for *any* domain the client visits on the fly — and your clients accept those forgeries because you distributed the CA into their trust stores.
+
 ## Regular TLS vs. inspection: the fundamental difference
 
 In **regular TLS**, there are two parties and one certificate: the server presents a leaf (server) certificate, the client validates it against a chain up to a well-known root, and an encrypted tunnel is established end-to-end. Nobody in the middle can read it. That's the whole point.
