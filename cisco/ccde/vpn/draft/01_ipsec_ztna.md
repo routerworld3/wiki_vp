@@ -412,18 +412,18 @@ flowchart TB
 
 ```mermaid
 flowchart LR
-    KS["Key Server<br/>group policy + keys"]
+    KS["Key Server<br/>Group policy + keys"]
     GM1["Group Member 1"]
     GM2["Group Member 2"]
     GM3["Group Member 3"]
 
-    KS -- "GDOI (RFC 6407)<br/>group SA distribution" --> GM1
+    KS -- "GDOI (RFC 6407)<br/>Group SA distribution" --> GM1
     KS --> GM2
     KS --> GM3
 
-    GM1 <-. "any-to-any, no<br/>point-to-point SAs" .-> GM2
-    GM2 <-. .-> GM3
-    GM1 <-. .-> GM3
+    GM1 <-.->|"Any-to-any,<br/>no point-to-point SAs"| GM2
+    GM2 <-.-> GM3
+    GM1 <-.-> GM3
 
     style KS fill:#dbeafe,stroke:#1e40af
 ```
