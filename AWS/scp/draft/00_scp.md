@@ -40,4 +40,18 @@ resource "aws_organizations_policy_attachment" "scp_a_all_targets" {
   policy_id = aws_organizations_policy.scp_a.id
   target_id = each.value
 }
+
+locals {
+  new_scp_targets = setsubtract(
+    local.all_scp_targets,
+    toset([aws_organizations_organizational_unit.parent.id])
+  )
+}
+
+resource "aws_organizations_policy_attachment" "scp_a_all_targets" {
+  for_each = local.new_scp_targets
+
+  policy_id = aws_organizations_policy.scp_a.id
+  target_id = each.value
+}
 ```
